@@ -16,10 +16,11 @@
  * under the License.
  */
 
-package org.wso2.synapse.test.framework;
+package org.wso2.ballerina.test.framework;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.ballerina.test.framework.BallerinaServerAgent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class ServerLogReader implements Runnable {
     private final Object lock = new Object();
     private Thread thread;
     private volatile boolean running = true;
-    private static final Log log = LogFactory.getLog(ServerAgent.class);
+    private static final Log log = LogFactory.getLog(BallerinaServerAgent.class);
 
     public ServerLogReader(String name, InputStream is) {
         this.streamType = name;
