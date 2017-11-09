@@ -19,7 +19,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.msf4j.HttpStreamHandler;
 import org.wso2.msf4j.HttpStreamer;
-import org.wso2.synapse.test.framework.ServerLogReader;
+//import org.wso2.synapse.test.framework.ServerLogReader;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -72,86 +72,103 @@ public class BallerinaServerAgent {
     private String serverHome;
 
 
-    private static final Log log = LogFactory.getLog(org.wso2.synapse.test.framework.ServerAgent.class);
+    private static final Log log = LogFactory.getLog(org.wso2.ballerina.test.framework.BallerinaServerAgent.class);
 
     private Process process;
 
     @GET
     @Path("/start")
-    public synchronized void  startServer(String[] args) {
+//    public synchronized void  startServer(String[] args) {
+    public synchronized void  startService(String[] ar) {
 
-        if (process == null) {
-            try {
-//                String synapseHomeLocation = getSynapseHome();
-//                String ballerinaHomLocation = getBallerinaHome();
-//
-//
-//                File synapseHome = Paths.get(synapseHomeLocation).toFile();
-//
-//                String[] cmdArray;
-//                // For Windows
-//                if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-//                    cmdArray = new String[]{ "cmd.exe", "/c", synapseHomeLocation + File.separator  + "bin" + File.separator +
-//                            "synapse.bat", "-synapseConfig", synapseHomeLocation + File.separator + "repository"
-//                            + File.separator + "conf" + File.separator + INTEGRATION_SYNAPSE_XML};
-//                } else {
-//                    // For Unix
-//                    cmdArray = new String[]{ "sh", synapseHomeLocation + File.separator + "bin" + File.separator +
-//                            "synapse.sh", "-synapseConfig", synapseHomeLocation + File.separator + "repository"
-//                            + File.separator + "conf" + File.separator + INTEGRATION_SYNAPSE_XML};
-//                }
+        //--------------------------------------------------------o----------------------------------------------
 
-                //====
+        String serverHome = "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.94.0-SNAPSHOT/";
+        String[] args = {"/home/anjana/JavaP/src/runBallerina/Test.bal"};
+        String scriptName = "ballerina";
+        String[] cmdArray;
+        File commandDir = new File(serverHome);
+        File err = new File("/home/anjana/JavaP/src/runBallerina/Errors.txt");
 
-                String scriptName = BALLERINA_SERVER_SCRIPT_NAME;
-                String[] cmdArray;
-                File commandDir = new File(serverHome);
+        Process process;
 
-                try {
-                    if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-                        commandDir = new File(serverHome + File.separator + "bin");
-                        cmdArray = new String[]{"cmd.exe", "/c", scriptName + ".bat", "run"};
-                        String[] cmdArgs = Stream.concat(Arrays.stream(cmdArray), Arrays.stream(args))
-                                .toArray(String[]::new);
-                        process = Runtime.getRuntime().exec(cmdArgs, null, commandDir);
+        try {
+            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+                commandDir = new File(serverHome + File.separator + "bin");
+                cmdArray = new String[]{"cmd.exe", "/c", scriptName + ".bat", "run"};
+                String[] cmdArgs = Stream.concat(Arrays.stream(cmdArray), Arrays.stream(args))
+                       .toArray(String[]::new);
+                process = Runtime.getRuntime().exec(cmdArgs, null, commandDir);
 
-                    } else {
-                        cmdArray = new String[]{"bash", "bin/" + scriptName, "run"};
-//                        String[] cmdArgs = Stream.concat(Arrays.stream(cmdArray), Arrays.stream(args))
-//                                .toArray(String[]::new);
-//                        process = Runtime.getRuntime().exec(cmdArgs, null, commandDir);
+            } else {
+                System.out.println();
+                cmdArray = new String[]{"bash", "bin/" + scriptName, "run"};
+                String[] cmdArgs = Stream.concat(Arrays.stream(cmdArray), Arrays.stream(args))
+                        .toArray(String[]::new);
+                System.out.println(Arrays.toString(args));
+                System.out.println(Arrays.toString(cmdArgs));
+//                process = Runtime.getRuntime().exec(cmdArgs, null, commandDir);
 
-                        String[] a = new String[] {"/bin/bash", "-c", "your_command", "with", "args"};
-                        Process p = new ProcessBuilder(a).start();
+                ProcessBuilder pb = new ProcessBuilder(cmdArgs);
+                pb.directory(new File(serverHome));
+                pb.redirectError(err);
 
+                process = pb.start();
+                process.waitFor();
 
-                    }
-                } catch (IOException e) {
-//                    throw new BallerinaTestException("Error starting services", e);
-                    throw new IOException("Error starting services", e);
-                }
-
-                //====
-
-//                process = Runtime.getRuntime().exec(cmdArray, null, synapseHome);
-
-                errorStreamHandler = new ServerLogReader("errorStream", process.getErrorStream());
-                inputStreamHandler = new ServerLogReader("inputStream", process.getInputStream());
-
-                // start the stream readers
-                inputStreamHandler.start();
-                errorStreamHandler.start();
-
-            } catch (Exception ex) {
-                log.error("Error while starting synapse server", ex);
             }
+
+        } catch (InterruptedException e) {
+            System.out.println("ERROR 1");
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.out.println("ERROR 2");
+            e.printStackTrace();
         }
+//        long pid = ProcessHandle.current().getPid();
+
 
     }
 
-    private String getSynapseHome() {
-        return System.getProperty("synapse.home", DEFAULT_SYNAPSE_HOME_LOCATION);
+
+    @GET
+    @Path("/stop")
+    public synchronized void stopService() {
+        if (process != null) {
+            try {
+//                String synapseKillCommand = getSynapseHome() + File.separator + "bin" + File.separator + "synapse-stop.sh";
+//                Runtime.getRuntime().exec(synapseKillCommand);
+            } catch (Exception e) {
+                log.error("Error while stopping Ballerina Service", e);
+            }
+            inputStreamHandler.stop();
+            errorStreamHandler.stop();
+            process = null;
+        }
     }
+
+    @GET
+    @Path("/stop")
+    public synchronized void stopAgent() {
+        if (process != null) {
+            try {
+//                String synapseKillCommand = getSynapseHome() + File.separator + "bin" + File.separator + "synapse-stop.sh";
+//                Runtime.getRuntime().exec(synapseKillCommand);
+            } catch (Exception e) {
+                log.error("Error while stopping synapse server", e);
+            }
+            inputStreamHandler.stop();
+            errorStreamHandler.stop();
+            process = null;
+        }
+    }
+
+
+
+//    private String getSynapseHome() {
+//        return System.getProperty("synapse.home", DEFAULT_SYNAPSE_HOME_LOCATION);
+//    }
 
 //    @GET
 //    @Path("/stop")

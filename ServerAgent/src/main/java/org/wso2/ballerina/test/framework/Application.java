@@ -1,8 +1,9 @@
 package org.wso2.ballerina.test.framework;
 
-import org.wso2.msf4j.MicroservicesRunner;
+//import org.wso2.msf4j.MicroservicesRunner;
 
-public class App {
+public class Application {
+
     public static void main(String[] args) {
 //        new MicroservicesRunner()
 //                .deploy(new ServerAgent())
@@ -10,9 +11,9 @@ public class App {
 
 
 //        new MicroservicesRunner().deploy(new BallerinaServerAgent()).start();
-
-//        BallerinaServerAgent bs = new BallerinaServerAgent();
-//        bs.startServer();
+        String[] ar = new String[0];
+        BallerinaServerAgent bs = new BallerinaServerAgent();
+        bs.startService(ar);
     }
 
 

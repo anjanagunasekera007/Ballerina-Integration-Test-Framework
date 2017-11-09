@@ -26,7 +26,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.wso2.synapse.test.framework</groupId>
+    <groupId>org.wso2.ballerina.test.framework</groupId>
     <artifactId>ServerAgent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Synapse Test Framework - Server Agent</name>
@@ -43,7 +43,7 @@
     </dependencies>
 
     <properties>
-        <microservice.mainClass>org.wso2.synapse.test.framework.Application</microservice.mainClass>
+        <microservice.mainClass>org.wso2.ballerina.test.framework.Application</microservice.mainClass>
     </properties>
 
 </project>
