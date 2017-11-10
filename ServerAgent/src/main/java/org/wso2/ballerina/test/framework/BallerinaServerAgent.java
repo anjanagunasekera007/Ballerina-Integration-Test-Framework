@@ -84,11 +84,12 @@ public class BallerinaServerAgent {
         //--------------------------------------------------------o----------------------------------------------
 
         String serverHome = "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.94.0-SNAPSHOT/";
-        String[] args = {"/home/anjana/JavaP/src/runBallerina/Test.bal"};
+//        String[] args = {"/home/anjana/JavaP/src/runBallerina/Test.bal"};
+        String[] args = {"/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Test.bal"};
         String scriptName = "ballerina";
         String[] cmdArray;
         File commandDir = new File(serverHome);
-        File err = new File("/home/anjana/JavaP/src/runBallerina/Errors.txt");
+        File err = new File("/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Errors.txt");
 
         Process process;
 
