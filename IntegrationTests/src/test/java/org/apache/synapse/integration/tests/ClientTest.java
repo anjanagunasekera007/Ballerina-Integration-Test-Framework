@@ -18,25 +18,20 @@
 
 package org.apache.synapse.integration.tests;
 
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpResponseStatus;
-
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.synapse.integration.BaseTest;
-import org.apache.synapse.integration.utils.TestUtils;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.protocol.emulator.dsl.Emulator;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBuilderContext;
-import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientOperationBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
-import org.wso2.carbon.protocol.emulator.http.client.contexts.RequestResponseCorrelation;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 public class ClientTest extends BaseTest {
     private String path = "/services/normal_server";
@@ -46,6 +41,7 @@ public class ClientTest extends BaseTest {
             "\"Abbrev\":\"ISO8879:1986\",\"GlossDef\":{\"para\":\"Ameta-markuplanguage," +
             "usedtocreatemarkuplanguagessuchasDocBook.\",\"GlossSeeAlso\":[\"GML\"," +
             "\"XML\"]},\"GlossSee\":\"markup\"}}}}}";
+    private String res = "Slowly responding backend";
     private File plainFile = new File("src/test/resources/files/100KB.txt");
     private File largeFile = new File("src/test/resources/files/1MB.txt");
     private String processingPath = "/services/content_type";
@@ -91,6 +87,22 @@ public class ClientTest extends BaseTest {
 
 
     //===
+    ///-----
+
+    @BeforeClass
+    public void initParameters() throws Exception {
+        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
+        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.94.0-SNAPSHOT/");
+        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Test.bal");
+//        postMethod.addParameter("Config", "config.xml");
+        HttpClient httpClient = new HttpClient();
+//        httpClient.executeMethod(postMethod);
+
+//        httpClient.executeMethod(postMethod);
+        System.out.println(" RUNNING ");
+    }
+
+        //----
     @Test
     public void testClientLargePayload() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
@@ -111,7 +123,7 @@ public class ClientTest extends BaseTest {
                 .operation()
                 .send();
 //        Assert.assertEquals(responseBody, response.getReceivedResponseContext().getResponseBody());
-        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(), responseBody);
+        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(), res);
 //        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(), responseBody);
 //        Assert.assertEquals(HttpHeaders.Values.APPLICATION_JSON,
 //                response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE));

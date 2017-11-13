@@ -15,15 +15,14 @@ package org.wso2.ballerina.test.framework;
  * limitations under the License.
  */
 
+import com.sun.deploy.net.HttpResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.msf4j.HttpStreamHandler;
 import org.wso2.msf4j.HttpStreamer;
 //import org.wso2.synapse.test.framework.ServerLogReader;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.io.File;
@@ -59,7 +58,7 @@ import javax.ws.rs.core.Response;
  *
  * @since 1.0-SNAPSHOT
  */
-@Path("/synapseAgent")
+@Path("/ballerinaagent")
 public class BallerinaServerAgent {
 
     private static final String DEFAULT_SYNAPSE_HOME_LOCATION = ".";
@@ -76,20 +75,29 @@ public class BallerinaServerAgent {
 
     private Process process;
 
-    @GET
+    @POST
     @Path("/start")
-//    public synchronized void  startServer(String[] args) {
-    public synchronized void  startService(String[] ar) {
+    public boolean  startService(@FormParam("ballerinaHome") String home,
+                                 @FormParam("ballerinaFilePath") String filePath,
+                                 @FormParam("config") String configPath) throws Exception {
 
         //--------------------------------------------------------o----------------------------------------------
 
-        String serverHome = "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.94.0-SNAPSHOT/";
-//        String[] args = {"/home/anjana/JavaP/src/runBallerina/Test.bal"};
-        String[] args = {"/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Test.bal"};
-        String scriptName = "ballerina";
+        System.out.println(" BALLERINA SERVER AGENT STARTED ======");
+//        String serverHome = "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.94.0-SNAPSHOT/";
+//        String[] args = {"/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Test.bal"};
+//        String scriptName = "ballerina";
         String[] cmdArray;
-        File commandDir = new File(serverHome);
-        File err = new File("/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Errors.txt");
+        System.out.println(" HOME ");
+        System.out.println(home);
+        System.out.println(" FILE PATH ");
+        System.out.println(filePath);
+        File commandDir = new File(home);
+
+        String serverHome = home;
+        String[] args = {filePath};
+        String scriptName = "ballerina";
+
 
         Process process;
 
@@ -106,34 +114,37 @@ public class BallerinaServerAgent {
                 cmdArray = new String[]{"bash", "bin/" + scriptName, "run"};
                 String[] cmdArgs = Stream.concat(Arrays.stream(cmdArray), Arrays.stream(args))
                         .toArray(String[]::new);
-                System.out.println(Arrays.toString(args));
-                System.out.println(Arrays.toString(cmdArgs));
-//                process = Runtime.getRuntime().exec(cmdArgs, null, commandDir);
-
                 ProcessBuilder pb = new ProcessBuilder(cmdArgs);
                 pb.directory(new File(serverHome));
-                pb.redirectError(err);
+//                pb.redirectError(err);
+//                String error = pb.redirectError().toString();
+//                pb.redirectError(error);
+                process = pb.inheritIO().start();
 
-                process = pb.start();
+//                process = pb.inheritIO().command();
+//                process = pb.command(cmdArgs).start();
+//                pb.redirectInput(process.INHERIT)
+
+
+
+//                System.console().writer().println(error);
+
+//                process = pb.start();
+                //---
+                return true;
+                //---
                 process.waitFor();
 
             }
 
-        } catch (InterruptedException e) {
-            System.out.println("ERROR 1");
-            e.printStackTrace();
-
         } catch (Exception e) {
-            System.out.println("ERROR 2");
-            e.printStackTrace();
+//            throw new StartFailException("Error while starting Ballerina Service", e);
+
         }
-//        long pid = ProcessHandle.current().getPid();
-
-
     }
 
 
-    @GET
+    @POST
     @Path("/stop")
     public synchronized void stopService() {
         if (process != null) {
@@ -149,8 +160,8 @@ public class BallerinaServerAgent {
         }
     }
 
-    @GET
-    @Path("/stop")
+    @POST
+    @Path("/stopagent")
     public synchronized void stopAgent() {
         if (process != null) {
             try {
@@ -164,86 +175,4 @@ public class BallerinaServerAgent {
             process = null;
         }
     }
-
-
-
-//    private String getSynapseHome() {
-//        return System.getProperty("synapse.home", DEFAULT_SYNAPSE_HOME_LOCATION);
-//    }
-
-//    @GET
-//    @Path("/stop")
-//    public synchronized void stopServer() {
-//        if (process != null) {
-//            try {
-//                String synapseKillCommand = getSynapseHome() + File.separator + "bin" + File.separator + "synapse-stop.sh";
-//                Runtime.getRuntime().exec(synapseKillCommand);
-//            } catch (IOException e) {
-//                log.error("Error while stopping synapse server", e);
-//            }
-//            inputStreamHandler.stop();
-//            errorStreamHandler.stop();
-//            process = null;
-//        }
-//    }
-//
-//    /**
-//     * Upload a file with streaming.
-//     *
-//     * @param httpStreamer Handle for setting the {@link HttpStreamHandler}callback for streaming.
-//     * @throws IOException
-//     */
-//    @POST
-//    @Path("/upload-config")
-//    public void postFile(@Context HttpStreamer httpStreamer) throws IOException {
-//        httpStreamer.callback(new org.wso2.synapse.test.framework.ServerAgent.HttpStreamHandlerImpl(
-//                getSynapseHome() + File.separator + "repository" + File.separator + "conf" + File.separator
-//                        + INTEGRATION_SYNAPSE_XML));
-//    }
-//
-//    private static class HttpStreamHandlerImpl implements HttpStreamHandler {
-//        private static final String SYNAPSE_SAMPLE_DIR = DEFAULT_SYNAPSE_HOME_LOCATION + File.separator + "repository"
-//                + File.separator + "conf";
-//        private FileChannel fileChannel = null;
-//        private org.wso2.msf4j.Response response;
-//
-//        HttpStreamHandlerImpl(String fileName) throws FileNotFoundException {
-//            File file = Paths.get(fileName).toFile();
-//            if (file.getParentFile().exists() || file.getParentFile().mkdirs()) {
-//                fileChannel = new FileOutputStream(file).getChannel();
-//            }
-//        }
-//
-//        @Override
-//        public void init(org.wso2.msf4j.Response response) {
-//            this.response = response;
-//        }
-//
-//        @Override
-//        public void end() throws Exception {
-//            fileChannel.close();
-//            response.setStatus(Response.Status.ACCEPTED.getStatusCode());
-//            response.send();
-//        }
-//
-//        @Override
-//        public void chunk(ByteBuffer content) throws Exception {
-//            if (fileChannel == null) {
-//                throw new IOException("Unable to write file");
-//            }
-//            fileChannel.write(content);
-//        }
-//
-//        @Override
-//        public void error(Throwable cause) {
-//            try {
-//                if (fileChannel != null) {
-//                    fileChannel.close();
-//                }
-//            } catch (IOException e) {
-//                // Log if unable to close the output stream
-//                log.error("Unable to close file output stream", e);
-//            }
-//        }
-//    }
 }
