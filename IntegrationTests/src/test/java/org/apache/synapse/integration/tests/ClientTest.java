@@ -23,6 +23,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.synapse.integration.BaseTest;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.protocol.emulator.dsl.Emulator;
@@ -32,6 +33,7 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
 
 import java.io.File;
+import java.io.IOException;
 
 public class ClientTest extends BaseTest {
     private String path = "/services/normal_server";
@@ -45,52 +47,17 @@ public class ClientTest extends BaseTest {
     private File plainFile = new File("src/test/resources/files/100KB.txt");
     private File largeFile = new File("src/test/resources/files/1MB.txt");
     private String processingPath = "/services/content_type";
-//    private String xmlBody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-//            "<note>\n" +
-//            "  <to>Tove</to>\n" +
-//            "  <from>Jani</from>\n" +
-//            "  <heading>Reminder</heading>\n" +
-//            "  <body>Don't forget me this weekend!</body>\n" +
-//            "</note>";
 
     private String xmlBodySmall = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<note>\n" +
             "</note>";
-
-//    protected String getSynapseConfig() throws IOException {
-//
-//        return TestUtils.getSynapseConfig("client.xml");
-//    }
-
-//    @Test
-//    public void testClientLargePayload() {
-//        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
-//                .client()
-//                .given(
-//                        HttpClientConfigBuilderContext.configure()
-//                                .host(getConfig().getSynapseServer().getHostname())
-//                                .port(Integer.parseInt(getConfig().getSynapseServer().getPort()))
-//                )
-//                .when(
-//                        HttpClientRequestBuilderContext.request().withPath(path)
-//                                .withMethod(HttpMethod.POST).withBody(largeFile)
-//                )
-//                .then(
-//                        HttpClientResponseBuilderContext.response().assertionIgnore()
-//                )
-//                .operation()
-//                .send();
-//        Assert.assertEquals(responseBody, response.getReceivedResponseContext().getResponseBody());
-//        Assert.assertEquals(HttpHeaders.Values.APPLICATION_JSON,
-//                            response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE));
-//    }
-
 
     //===
     ///-----
 
     @BeforeClass
     public void initParameters() throws Exception {
+        System.out.println(" RUNNING BEFORE CLASS");
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
         postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.94.0-SNAPSHOT/");
         postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Test.bal");
@@ -98,8 +65,7 @@ public class ClientTest extends BaseTest {
         HttpClient httpClient = new HttpClient();
 //        httpClient.executeMethod(postMethod);
 
-//        httpClient.executeMethod(postMethod);
-        System.out.println(" RUNNING ");
+        httpClient.executeMethod(postMethod);
     }
 
         //----
@@ -412,4 +378,15 @@ public class ClientTest extends BaseTest {
 //                .send();
 //        Assert.assertNull(response);
 //    }
+
+
+    @AfterClass
+    public void StopAgent() throws IOException {
+        System.out.println(" RUNNING BEFORE CLASS");
+        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
+        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.94.0-SNAPSHOT/");
+        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Test.bal");
+//        postMethod.addParameter("Config", "config.xml");
+        HttpClient httpClient = new HttpClient();
+        httpClient.executeMethod(postMethod);    }
 }
