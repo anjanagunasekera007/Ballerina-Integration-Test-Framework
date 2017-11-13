@@ -58,9 +58,9 @@ public class ClientTest extends BaseTest {
     @BeforeClass
     public void initParameters() throws Exception {
         System.out.println(" RUNNING BEFORE CLASS");
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
-        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.94.0-SNAPSHOT/");
-        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Test.bal");
+        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start2");
+//        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.94.0-SNAPSHOT/");
+//        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Test1.bal");
 //        postMethod.addParameter("Config", "config.xml");
         HttpClient httpClient = new HttpClient();
 //        httpClient.executeMethod(postMethod);

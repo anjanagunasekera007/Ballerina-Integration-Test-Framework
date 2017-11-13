@@ -155,9 +155,7 @@ public class BallerinaServerAgent {
 
     @POST
     @Path("/start2")
-    public void startService2(@FormParam("ballerinaHome") String home,
-                             @FormParam("ballerinaFilePath") String filePath,
-                             @FormParam("config") String configPath) throws Exception {
+    public void startService2() {
 
         System.out.println(" = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ");
 
@@ -168,6 +166,9 @@ public class BallerinaServerAgent {
         System.out.println(" = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ");
 
         //--------------------------------------------------------o----------------------------------------------
+
+        String home = "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.94.0-SNAPSHOT/";
+        String filePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Test.bal";
 
         System.out.println(" BALLERINA SERVER AGENT STARTED ======");
         String[] cmdArray;
@@ -208,7 +209,7 @@ public class BallerinaServerAgent {
 
 //                process.waitFor();
 
-                Thread.sleep(10000);
+                Thread.sleep(3000);
 
             }
 

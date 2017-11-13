@@ -12,7 +12,8 @@ public class Application {
 //                .start();
 
 
-        new MicroservicesRunner(8081).deploy(new BallerinaServerAgent()).start();
+        System.out.println("Starting ms in  8081");
+        new MicroservicesRunner().deploy(new BallerinaServerAgent()).start();
 //        String[] ar = new String[0];
 //        BallerinaServerAgent bs = new BallerinaServerAgent();
 //        bs.startService(ar);
