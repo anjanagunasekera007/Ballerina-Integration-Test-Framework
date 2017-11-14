@@ -57,18 +57,15 @@ public class ClientTest extends BaseTest {
 
     @BeforeClass
     public void initParameters() throws Exception {
-        System.out.println(" RUNNING BEFORE CLASS");
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start2");
-//        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.94.0-SNAPSHOT/");
-//        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Test1.bal");
+        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.94.0-SNAPSHOT/");
+        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Test.bal");
 //        postMethod.addParameter("Config", "config.xml");
         HttpClient httpClient = new HttpClient();
-//        httpClient.executeMethod(postMethod);
 
         httpClient.executeMethod(postMethod);
     }
 
-        //----
     @Test
     public void testClientLargePayload() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
@@ -94,7 +91,6 @@ public class ClientTest extends BaseTest {
 //        Assert.assertEquals(HttpHeaders.Values.APPLICATION_JSON,
 //                response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE));
     }
-    //===
 //
 //    @Test
 //    public void testClientProcessingLargePayload() {

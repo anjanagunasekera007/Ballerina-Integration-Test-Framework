@@ -17,54 +17,18 @@ package org.wso2.ballerina.test.framework;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-//import org.wso2.msf4j.HttpStreamHandler;
-//import org.wso2.msf4j.HttpStreamer;
-
 import javax.ws.rs.*;
-//import javax.ws.rs.core.Context;
-//import javax.ws.rs.core.Response;
 import java.io.File;
-//import java.io.FileNotFoundException;
-//import java.io.FileOutputStream;
-//import java.io.IOException;
-//import java.nio.ByteBuffer;
-//import java.nio.channels.FileChannel;
-//import java.nio.file.Paths;
-
-//import org.apache.commons.logging.Log;
-//import org.apache.commons.logging.LogFactory;
-//import org.wso2.msf4j.HttpStreamHandler;
-//import org.wso2.msf4j.HttpStreamer;
-
-//import java.io.File;
-//import java.io.FileNotFoundException;
-//import java.io.FileOutputStream;
-//import java.io.IOException;
-//import java.nio.ByteBuffer;
-//import java.nio.channels.FileChannel;
-//import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.stream.Stream;
-//import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-//import javax.ws.rs.core.Context;
-//import javax.ws.rs.core.Response;
-
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 /**
  * This is a Agent to run in ballerina server machine
  *
@@ -80,108 +44,21 @@ public class BallerinaServerAgent {
 
     private Process process;
 
-    @GET
-    @Path("/start")
-    public void startService(@FormParam("ballerinaHome") String home,
-                             @FormParam("ballerinaFilePath") String filePath,
-                             @FormParam("config") String configPath) throws Exception {
-
-        //--------------------------------------------------------o----------------------------------------------
-
-        System.out.println(" BALLERINA SERVER AGENT STARTED ======");
-
-        String[] cmdArray;
-        System.out.println(" HOME ");
-        System.out.println(home);
-        System.out.println(" FILE PATH ");
-        System.out.println(filePath);
-        File commandDir = new File(home);
-
-        String serverHome = home;
-        String[] args = {filePath};
-        String scriptName = "ballerina";
-
-
-        Process process;
-
-        System.out.println(" IN IF ");
-
-        try {
-            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-                commandDir = new File(serverHome + File.separator + "bin");
-                cmdArray = new String[]{"cmd.exe", "/c", scriptName + ".bat", "run"};
-                String[] cmdArgs = Stream.concat(Arrays.stream(cmdArray), Arrays.stream(args))
-                        .toArray(String[]::new);
-                process = Runtime.getRuntime().exec(cmdArgs, null, commandDir);
-
-            } else {
-                System.out.println();
-                cmdArray = new String[]{"bash", "bin/" + scriptName, "run"};
-                String[] cmdArgs = Stream.concat(Arrays.stream(cmdArray), Arrays.stream(args))
-                        .toArray(String[]::new);
-                ProcessBuilder pb = new ProcessBuilder(cmdArgs);
-                pb.directory(new File(serverHome));
-                System.out.println(" Running  - 2 ");
-
-//                pb.redirectError(err);
-//                String error = pb.redirectError().toString();
-//                pb.redirectError(error);
-                process = pb.inheritIO().start();
-                System.out.println(" Running  -1 ");
-
-//                process = pb.inheritIO().command();
-//                process = pb.command(cmdArgs).start();
-//                pb.redirectInput(process.INHERIT)
-
-
-//                System.console().writer().println(error);
-
-//                process = pb.start();
-                //---
-//                return true;
-                //---
-//                process.waitFor();
-//
-                Thread.sleep(3000);
-
-            }
-
-        } catch (Exception e) {
-//            throw new StartFailException("Error while starting Ballerina Service", e);
-
-        }
-//        return true;
-    }
 
     @POST
     @Path("/start2")
-    public void startService2() {
+    public void startService2(@FormParam("ballerinaHome") String home,
+                              @FormParam("ballerinaFilePath") String filePath,
+                              @FormParam("config") String configPath) {
 
-        System.out.println(" = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ");
-
-        System.out.println(" = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ");
-
-        System.out.println(" = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ");
-
-        System.out.println(" = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ");
-
-        //--------------------------------------------------------o----------------------------------------------
-
-        String home = "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.94.0-SNAPSHOT/";
-        String filePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Test.bal";
-
-        System.out.println(" BALLERINA SERVER AGENT STARTED ======");
         String[] cmdArray;
-        System.out.println(" HOME ");
         System.out.println(home);
-        System.out.println(" FILE PATH ");
         System.out.println(filePath);
         File commandDir = new File(home);
 
         String serverHome = home;
         String[] args = {filePath};
         String scriptName = "ballerina";
-        System.out.println(" oiiiiiiiiiiiiiiiiiiii ");
 
 
         Process process;
@@ -201,13 +78,8 @@ public class BallerinaServerAgent {
                         .toArray(String[]::new);
                 ProcessBuilder pb = new ProcessBuilder(cmdArgs);
                 pb.directory(new File(serverHome));
-                System.out.println(" Running  - 2 ");
 
                 process = pb.inheritIO().start();
-                System.out.println(" Running  -1 ");
-
-
-//                process.waitFor();
 
                 Thread.sleep(3000);
 
@@ -229,8 +101,6 @@ public class BallerinaServerAgent {
             } catch (Exception e) {
                 log.error("Error while stopping Ballerina Service", e);
             }
-//            inputStreamHandler.stop();
-//            errorStreamHandler.stop();
             process = null;
         }
     }
@@ -266,8 +136,6 @@ public class BallerinaServerAgent {
 
     }
 
-
-    //====
     public void stopServer() throws Exception {
         log.info("Stopping server..");
         if (process != null) {
