@@ -61,7 +61,7 @@ public class BallerinaServerAgent {
         String scriptName = "ballerina";
 
 
-        Process process;
+//        Process process;
 
         try {
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
@@ -166,8 +166,6 @@ public class BallerinaServerAgent {
             //TODO Fix port close
 //            Utils.waitForPortToClosed(httpServerPort, 30000);
             log.info("Server Stopped Successfully");
-
-//            deleteWorkDir();
         }
     }
 
