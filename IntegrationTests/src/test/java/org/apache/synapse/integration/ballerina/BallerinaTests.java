@@ -4,12 +4,7 @@ package org.apache.synapse.integration.ballerina;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.synapse.integration.BaseTest;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.protocol.emulator.dsl.Emulator;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.*;
@@ -56,8 +51,7 @@ public class BallerinaTests {
                 .operation()
                 .send();
         Assert.assertEquals(responseBody, response.getReceivedResponseContext().getResponseBody());
-//        Assert.assertEquals(HttpHeaders.Values.APPLICATION_JSON,
-//                            response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE));
+
     }
 
     @Test

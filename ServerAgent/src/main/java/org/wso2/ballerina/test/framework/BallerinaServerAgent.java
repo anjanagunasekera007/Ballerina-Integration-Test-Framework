@@ -52,16 +52,12 @@ public class BallerinaServerAgent {
                               @FormParam("config") String configPath) {
 
         String[] cmdArray;
-        System.out.println(home);
-        System.out.println(filePath);
         File commandDir = new File(home);
 
         String serverHome = home;
         String[] args = {filePath};
         String scriptName = "ballerina";
 
-
-//        Process process;
 
         try {
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
@@ -72,7 +68,6 @@ public class BallerinaServerAgent {
                 process = Runtime.getRuntime().exec(cmdArgs, null, commandDir);
 
             } else {
-                System.out.println();
                 cmdArray = new String[]{"bash", "bin/" + scriptName, "run"};
                 String[] cmdArgs = Stream.concat(Arrays.stream(cmdArray), Arrays.stream(args))
                         .toArray(String[]::new);
@@ -238,7 +233,6 @@ public class BallerinaServerAgent {
             pid = readProcessInputStream(tmp.getInputStream());
 
         } catch (Exception err) {
-//            throw Exception("Error retrieving the PID : ", err);
             log.error("Error retrieving the PID : ", err);
         } finally {
             if (tmp != null) {
