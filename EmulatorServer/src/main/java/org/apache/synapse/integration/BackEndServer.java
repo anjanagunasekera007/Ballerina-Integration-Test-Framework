@@ -37,10 +37,33 @@ public class BackEndServer {
         startHttpEmulatorMissingHeader();
         startHttpInvalidSpec();
         startHttpEmulatorSlowWritingLargePayload();
+        startHttpEmulatorNormal();
+    }
+
+    private static HttpServerOperationBuilderContext startHttpEmulatorNormal() throws IOException {
+        System.out.println("Http Server Large Payload");
+
+
+        return Emulator.getHttpEmulator().server()
+
+                .given(
+                        configure().host(hostIp).port(6064).context("/normal").withEnableWireLog( )
+
+                )
+
+                .when(
+                        request().withMethod(HttpMethod.POST).withPath("/server")
+
+                )
+                .then(
+                        response().withBody("@{body}").withStatusCode(HttpResponseStatus.OK)
+                )
+
+                .operation().start();
     }
 
     private static HttpServerOperationBuilderContext startHttpEmulatorLargePayload() throws IOException {
-        System.out.println(" Http Server Large Payload");
+        System.out.println("Http Server Large Payload");
         return Emulator.getHttpEmulator().server()
 
                 .given(

@@ -36,7 +36,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class ClientTest extends BaseTest {
-    private String path = "/services/normal_server";
+    private String path = "/services/normal_server/normal";
     private String responseBody = "{\"glossary\":{\"title\":\"exampleglossary\",\"GlossDiv\":{\"title\":\"S\"," +
             "\"GlossList\":{\"GlossEntry\":{\"ID\":\"SGML\",\"SortAs\":\"SGML\"," +
             "\"GlossTerm\":\"StandardGeneralizedMarkupLanguage\",\"Acronym\":\"SGML\"," +
@@ -82,7 +82,7 @@ public class ClientTest extends BaseTest {
                 )
                 .operation()
                 .send();
-        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(), res);
+        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(), xmlBodySmall);
 
     }
 
