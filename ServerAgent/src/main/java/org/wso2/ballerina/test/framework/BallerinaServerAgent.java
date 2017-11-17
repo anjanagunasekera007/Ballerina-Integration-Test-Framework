@@ -90,189 +90,20 @@ public class BallerinaServerAgent {
     @POST
     @Path("/stop")
     public synchronized void stopService() {
-        if (process != null) {
-            try {
-                stopServer();
-            } catch (Exception e) {
-                log.error("Error while stopping Ballerina Service", e);
-            }
-            process = null;
+
+        String cmd = "fuser -k 9090/tcp";
+        try {
+            Process p = Runtime.getRuntime().exec(cmd);
+        } catch (IOException e) {
+            log.error("Unable to shut down server at 9090 ",e);
         }
     }
 
     @POST
     @Path("/stopagent")
     public synchronized void stopAgent() throws Exception {
-        if (process != null) {
-                String pid;
-                try {
-                    pid = getServerPID();
-                    if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-                        Process killServer = Runtime.getRuntime().exec("TASKKILL -F /PID " + pid);
-                        log.info(readProcessInputStream(killServer.getInputStream()));
-                        killServer.waitFor(15, TimeUnit.SECONDS);
-                        killServer.destroy();
-                    } else {
-                        Process killServer = Runtime.getRuntime().exec("kill -9 " + pid);
-                        killServer.waitFor(15, TimeUnit.SECONDS);
-                        killServer.destroy();
-                    }
-                } catch (IOException e) {
-                    log.error("Error getting process id for the server in port - " + httpServerPort
-                            + " error - " + e.getMessage(), e);
-                    throw new Exception("Error while getting the server process id", e);
-                } catch (Exception e) {
-                    log.error("Error while stopping Ballerina server", e);
-                }
-
-                process = null;
-
-        }
 
     }
 
-    public void stopServer() throws Exception {
-        log.info("Stopping server..");
-        if (process != null) {
-            String pid;
-            try {
-                pid = getServerPID();
-                if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-                    Process killServer = Runtime.getRuntime().exec("TASKKILL -F /PID " + pid);
-                    log.info(readProcessInputStream(killServer.getInputStream()));
-                    killServer.waitFor(15, TimeUnit.SECONDS);
-                    killServer.destroy();
-                } else {
-                    Process killServer = Runtime.getRuntime().exec("kill -9 " + pid);
-                    killServer.waitFor(15, TimeUnit.SECONDS);
-                    killServer.destroy();
-                }
-            } catch (IOException e) {
-                log.error("Error getting process id for the server in port - " + httpServerPort
-                        + " error - " + e.getMessage(), e);
-                throw new Exception("Error while getting the server process id", e);
-            } catch (InterruptedException e) {
-                log.error("Error stopping the server in port - " + httpServerPort + " error - " + e.getMessage(), e);
-                throw new Exception("Error waiting for services to stop", e);
-            }
-            process.destroy();
-            process = null;
-            //wait until port to close
-            //TODO Fix port close
-//            Utils.waitForPortToClosed(httpServerPort, 30000);
-            log.info("Server Stopped Successfully");
-        }
-    }
-
-    private String getServerPID() throws Exception {
-        String pid = null;
-        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            //reading the process id from netstat
-            Process tmp;
-            try {
-                tmp = Runtime.getRuntime().exec("netstat -a -n -o");
-            } catch (IOException e) {
-                throw new Exception("Error retrieving netstat data", e);
-            }
-
-            String outPut = readProcessInputStream(tmp.getInputStream());
-            String[] lines = outPut.split("\r\n");
-            for (String line : lines) {
-                String[] column = line.trim().split("\\s+");
-                if (column.length < 5) {
-                    continue;
-                }
-                if (column[1].contains(":" + httpServerPort) && column[3].contains("LISTENING")) {
-                    log.info(line);
-                    pid = column[4];
-                    break;
-                }
-            }
-            tmp.destroy();
-        } else {
-
-            //reading the process id from ss
-            Process tmp = null;
-            try {
-                String[] cmd = { "bash", "-c",
-                        "ss -ltnp \'sport = :" + httpServerPort + "\' | grep LISTEN | awk \'{print $6}\'" };
-                tmp = Runtime.getRuntime().exec(cmd);
-                String outPut = readProcessInputStream(tmp.getInputStream());
-                log.info("Output of the PID extraction command : " + outPut);
-                /* The output of ss command is "users:(("java",pid=24522,fd=161))" in latest ss versions
-                 But in older versions the output is users:(("java",23165,116))
-                 TODO : Improve this OS dependent logic */
-                if (outPut.contains("pid=")) {
-                    pid = outPut.split("pid=")[1].split(",")[0];
-                } else {
-                    pid = outPut.split(",")[1];
-                }
-
-            } catch (Exception e) {
-                log.warn("Error occurred while extracting the PID with ss " + e.getMessage());
-                // If ss command fails trying with lsof. MacOS doesn't have ss by default
-                pid = getPidWithLsof(httpServerPort);
-            } finally {
-                if (tmp != null) {
-                    tmp.destroy();
-                }
-            }
-        }
-        log.info("Server process id in " + System.getProperty("os.name").toLowerCase() + " : " + pid);
-
-            return pid;
-    }
-
-
-    private String getPidWithLsof(int httpServerPort) throws Exception {
-        String pid ="";
-        Process tmp = null;
-        try {
-            String[] cmd = { "bash", "-c", "lsof -Pi tcp:" + httpServerPort + " | grep LISTEN | awk \'{print $2}\'" };
-            tmp = Runtime.getRuntime().exec(cmd);
-            pid = readProcessInputStream(tmp.getInputStream());
-
-        } catch (Exception err) {
-            log.error("Error retrieving the PID : ", err);
-        } finally {
-            if (tmp != null) {
-                tmp.destroy();
-            }
-        }
-        return pid;
-    }
-
-    private String readProcessInputStream(InputStream inputStream) {
-        InputStreamReader inputStreamReader = null;
-        BufferedReader bufferedReader = null;
-        StringBuilder stringBuilder = new StringBuilder();
-        try {
-            inputStreamReader = new InputStreamReader(inputStream, Charset.defaultCharset());
-            bufferedReader = new BufferedReader(inputStreamReader);
-            int x;
-            while ((x = bufferedReader.read()) != -1) {
-                stringBuilder.append((char) x);
-            }
-        } catch (Exception ex) {
-            log.error("Error reading process id", ex);
-        } finally {
-            if (inputStreamReader != null) {
-                try {
-                    inputStream.close();
-                    inputStreamReader.close();
-                } catch (IOException e) {
-                    log.error("Error occurred while closing stream: " + e.getMessage(), e);
-                }
-            }
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    log.error("Error occurred while closing stream: " + e.getMessage(), e);
-                }
-            }
-        }
-        return stringBuilder.toString();
-    }
 
 }
