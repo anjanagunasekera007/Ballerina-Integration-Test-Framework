@@ -154,28 +154,28 @@ public class BallerinaTests {
 //                            response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE));
     }
 
-    @Test
-    public void testDisconnectPartially() {
-        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
-                .client()
-                .given(
-                        HttpClientConfigBuilderContext.configure()
-                                .host("127.0.0.1")
-                                .port(Integer.parseInt("9090"))
-                                .withPartialWriteConnectionDrop()
-                )
-                .when(
-                        HttpClientRequestBuilderContext.request().withPath(path)
-                                .withMethod(HttpMethod.POST).withBody(plainFile)
-                )
-                .then(
-                        HttpClientResponseBuilderContext.response().assertionIgnore()
-                )
-                .operation()
-                .send();
-
-        Assert.assertNull(response);
-    }
+//    @Test
+//    public void testDisconnectPartially() {
+//        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+//                .client()
+//                .given(
+//                        HttpClientConfigBuilderContext.configure()
+//                                .host("127.0.0.1")
+//                                .port(Integer.parseInt("9090"))
+//                                .withPartialWriteConnectionDrop()
+//                )
+//                .when(
+//                        HttpClientRequestBuilderContext.request().withPath(path)
+//                                .withMethod(HttpMethod.POST).withBody(plainFile)
+//                )
+//                .then(
+//                        HttpClientResponseBuilderContext.response().assertionIgnore()
+//                )
+//                .operation()
+//                .send();
+//
+//        Assert.assertNull(response);
+//    }
 
     @Test
     public void testBurstRequests() {
@@ -197,9 +197,9 @@ public class BallerinaTests {
                     .operation()
                     .sendAsync();
             List<RequestResponseCorrelation> responseCorrelations = httpClientOperationBuilderContext.shutdown();
-//            Assert.assertEquals(responseBody, responseCorrelations.get(0).getReceivedResponse()
-//                    .getReceivedResponseContext()
-//                    .getResponseBody());
+            Assert.assertEquals(responseBody, responseCorrelations.get(0).getReceivedResponse()
+                    .getReceivedResponseContext()
+                    .getResponseBody());
 //            Assert.assertEquals(HttpHeaders.Values.APPLICATION_JSON, responseCorrelations.get(0).getReceivedResponse()
 //                    .getReceivedResponse()
 //                    .headers().get(HttpHeaders.Names.CONTENT_TYPE));
