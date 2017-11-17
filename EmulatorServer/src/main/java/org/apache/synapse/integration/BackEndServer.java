@@ -109,7 +109,7 @@ public class BackEndServer {
                         request().withMethod(HttpMethod.POST).withPath("/delay")
                 )
                 .then(
-                        response().withBody("Slowly reading backend").withStatusCode(HttpResponseStatus.OK)
+                        response().withBody("@{body}").withStatusCode(HttpResponseStatus.OK)
                 )
 
                 .operation().start();

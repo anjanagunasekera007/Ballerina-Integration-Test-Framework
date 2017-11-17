@@ -31,28 +31,28 @@ public class BallerinaTests {
             "<note>\n" +
             "</note>";
 
-    @Test
-    public void testClientProcessingLargePayload() {
-        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
-                .client()
-                .given(
-                        HttpClientConfigBuilderContext.configure()
-                                .host("127.0.0.1")
-                                .port(Integer.parseInt("9090"))
-                )
-                .when(
-                        HttpClientRequestBuilderContext.request().withPath(processingPath)
-                                .withMethod(HttpMethod.POST).withBody(largeFile)
-                                .withHeader(HttpHeaders.Names.CONTENT_TYPE, "text/plain")
-                )
-                .then(
-                        HttpClientResponseBuilderContext.response().assertionIgnore()
-                )
-                .operation()
-                .send();
-        Assert.assertEquals(responseBody, response.getReceivedResponseContext().getResponseBody());
-
-    }
+//    @Test
+//    public void testClientProcessingLargePayload() {
+//        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+//                .client()
+//                .given(
+//                        HttpClientConfigBuilderContext.configure()
+//                                .host("127.0.0.1")
+//                                .port(Integer.parseInt("9090"))
+//                )
+//                .when(
+//                        HttpClientRequestBuilderContext.request().withPath(processingPath)
+//                                .withMethod(HttpMethod.POST).withBody(largeFile)
+//                                .withHeader(HttpHeaders.Names.CONTENT_TYPE, "text/plain")
+//                )
+//                .then(
+//                        HttpClientResponseBuilderContext.response().assertionIgnore()
+//                )
+//                .operation()
+//                .send();
+//        Assert.assertEquals(responseBody, response.getReceivedResponseContext().getResponseBody());
+//
+//    }
 
     @Test
     public void testClientSlowWriting() {

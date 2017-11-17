@@ -37,6 +37,7 @@ import java.io.*;
 public class ClientTest extends BaseTest {
     private String path = "/services/normal_server/normal";
     private String pathLargePayload = "/services/normal_server/largepayload";
+    private String pathSlowReading = "/services/normal_server/slowreading";
 
 
     private String responseBody = "{\"glossary\":{\"title\":\"exampleglossary\",\"GlossDiv\":{\"title\":\"S\"," +
@@ -48,6 +49,11 @@ public class ClientTest extends BaseTest {
     private String res = "Slowly responding backend";
     private File plainFile = new File("src/test/resources/files/100KB.txt");
     private File largeFile = new File("src/test/resources/files/1MB.txt");
+
+    private String largeFilePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/EmulatorServer/1MB.txt";
+    private String plainFilePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/IntegrationTests/src/test/resources/files/100KB.txt";
+
+
     private String processingPath = "/services/content_type";
 
     private String xmlBodySmall = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -64,6 +70,7 @@ public class ClientTest extends BaseTest {
 
         httpClient.executeMethod(postMethod);
     }
+
 
     @Test
     public void testNormalServer() {
@@ -91,7 +98,7 @@ public class ClientTest extends BaseTest {
     @Test
     public void testServerSendingLargePayload() {
 
-        String s = readFile();
+        String s = readFile(largeFilePath);
 
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -114,13 +121,37 @@ public class ClientTest extends BaseTest {
 
     }
 
+    @Test
+    public void testServerSlowReading() {
+        String s = readFile(plainFilePath);
 
-    public String readFile() {
+        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+                .client()
+                .given(
+                        HttpClientConfigBuilderContext.configure()
+                                .host("127.0.0.1")
+                                .port(Integer.parseInt("9090"))
+                )
+                .when(
+                        HttpClientRequestBuilderContext.request().withPath(pathSlowReading)
+                                .withMethod(HttpMethod.POST).withBody(responseBody)
+                )
+                .then(
+                        HttpClientResponseBuilderContext.response().assertionIgnore()
+                )
+                .operation()
+                .send();
+        Assert.assertEquals(responseBody, response.getReceivedResponseContext().getResponseBody());
+
+    }
+
+
+      public String readFile(String filePath) {
         String fileName = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/EmulatorServer/1MB.txt";
         String line = null;
         String st = "";
         try {
-            FileReader fileReader = new FileReader(fileName);
+            FileReader fileReader = new FileReader(filePath);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             while ((line = bufferedReader.readLine()) != null) {
                 st = st + line;
