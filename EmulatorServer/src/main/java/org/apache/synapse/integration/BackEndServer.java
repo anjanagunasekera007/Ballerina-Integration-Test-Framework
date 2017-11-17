@@ -160,7 +160,7 @@ public class BackEndServer {
                         request().withMethod(HttpMethod.POST).withPath("/writer")
                 )
                 .then(
-                        response().withBody("Slowly writing backend").withStatusCode(HttpResponseStatus.OK)
+                        response().withBody("@{body}").withStatusCode(HttpResponseStatus.OK)
                 )
 
                 .operation().start();

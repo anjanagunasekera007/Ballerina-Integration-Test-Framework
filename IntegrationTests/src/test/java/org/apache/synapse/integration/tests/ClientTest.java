@@ -38,6 +38,7 @@ public class ClientTest extends BaseTest {
     private String path = "/services/normal_server/normal";
     private String pathLargePayload = "/services/normal_server/largepayload";
     private String pathSlowReading = "/services/normal_server/slowreading";
+    private String pathSlowWriting = "/services/normal_server/slowriting";
 
 
     private String responseBody = "{\"glossary\":{\"title\":\"exampleglossary\",\"GlossDiv\":{\"title\":\"S\"," +
@@ -123,8 +124,6 @@ public class ClientTest extends BaseTest {
 
     @Test
     public void testServerSlowReading() {
-        String s = readFile(plainFilePath);
-
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
                 .given(
@@ -134,6 +133,29 @@ public class ClientTest extends BaseTest {
                 )
                 .when(
                         HttpClientRequestBuilderContext.request().withPath(pathSlowReading)
+                                .withMethod(HttpMethod.POST).withBody(responseBody)
+                )
+                .then(
+                        HttpClientResponseBuilderContext.response().assertionIgnore()
+                )
+                .operation()
+                .send();
+        Assert.assertEquals(responseBody, response.getReceivedResponseContext().getResponseBody());
+
+    }
+
+    @Test
+    public void testServerSlowWriting() {
+
+        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+                .client()
+                .given(
+                        HttpClientConfigBuilderContext.configure()
+                                .host("127.0.0.1")
+                                .port(Integer.parseInt("9090"))
+                )
+                .when(
+                        HttpClientRequestBuilderContext.request().withPath(pathSlowWriting)
                                 .withMethod(HttpMethod.POST).withBody(responseBody)
                 )
                 .then(
