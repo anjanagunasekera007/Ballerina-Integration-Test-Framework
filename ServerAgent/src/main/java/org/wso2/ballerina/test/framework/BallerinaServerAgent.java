@@ -90,8 +90,22 @@ public class BallerinaServerAgent {
     @POST
     @Path("/stop")
     public synchronized void stopService() {
+        killProcess("9009");
 
-        String cmd = "fuser -k 9090/tcp";
+    }
+
+    @POST
+    @Path("/stopagent")
+    public synchronized void stopAgent() throws Exception {
+
+       killProcess("9090");
+       killProcess("9001");
+    }
+
+
+    public static void killProcess(String port)
+    {
+        String cmd = "fuser -k "+port+"/tcp";
         try {
             Process p = Runtime.getRuntime().exec(cmd);
         } catch (IOException e) {
@@ -99,11 +113,6 @@ public class BallerinaServerAgent {
         }
     }
 
-    @POST
-    @Path("/stopagent")
-    public synchronized void stopAgent() throws Exception {
-
-    }
 
 
 }
