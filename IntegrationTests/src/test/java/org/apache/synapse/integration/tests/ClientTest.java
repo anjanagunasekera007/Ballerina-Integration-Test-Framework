@@ -32,11 +32,13 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestB
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 public class ClientTest extends BaseTest {
     private String path = "/services/normal_server/normal";
+    private String pathLargePayload = "/services/normal_server/largepayload";
+
+
     private String responseBody = "{\"glossary\":{\"title\":\"exampleglossary\",\"GlossDiv\":{\"title\":\"S\"," +
             "\"GlossList\":{\"GlossEntry\":{\"ID\":\"SGML\",\"SortAs\":\"SGML\"," +
             "\"GlossTerm\":\"StandardGeneralizedMarkupLanguage\",\"Acronym\":\"SGML\"," +
@@ -64,7 +66,7 @@ public class ClientTest extends BaseTest {
     }
 
     @Test
-    public void testClientLargePayload() {
+    public void testNormalServer() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
                 .given(
@@ -86,10 +88,57 @@ public class ClientTest extends BaseTest {
 
     }
 
+    @Test
+    public void testServerSendingLargePayload() {
+
+        String s = readFile();
+
+        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+                .client()
+                .given(
+                        HttpClientConfigBuilderContext.configure()
+                                .host("127.0.0.1")
+                                .port(Integer.parseInt("9090"))
+                )
+                .when(
+                        HttpClientRequestBuilderContext.request().withPath(pathLargePayload)
+                                .withMethod(HttpMethod.POST).withBody("Recieve Large Payload")
+
+                )
+                .then(
+                        HttpClientResponseBuilderContext.response().assertionIgnore()
+                )
+                .operation()
+                .send();
+        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody().toString(), s);
+
+    }
+
+
+    public String readFile() {
+        String fileName = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/EmulatorServer/1MB.txt";
+        String line = null;
+        String st = "";
+        try {
+            FileReader fileReader = new FileReader(fileName);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            while ((line = bufferedReader.readLine()) != null) {
+                st = st + line;
+            }
+            bufferedReader.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Unable to open file '" + fileName + "'");
+        } catch (IOException ex) {
+            System.out.println("Error reading file '" + fileName + "'");
+        }
+        return st;
+    }
+
 
     @AfterClass
     public void StopAgent() throws IOException {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
         HttpClient httpClient = new HttpClient();
-        httpClient.executeMethod(postMethod);    }
+        httpClient.executeMethod(postMethod);
+    }
 }

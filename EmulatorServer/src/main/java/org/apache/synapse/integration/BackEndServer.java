@@ -7,8 +7,7 @@ import io.netty.handler.codec.http.HttpVersion;
 import org.wso2.carbon.protocol.emulator.dsl.Emulator;
 import org.wso2.carbon.protocol.emulator.http.server.contexts.HttpServerOperationBuilderContext;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 import static org.wso2.carbon.protocol.emulator.http.server.contexts.HttpServerConfigBuilderContext.configure;
 import static org.wso2.carbon.protocol.emulator.http.server.contexts.HttpServerRequestBuilderContext.request;
@@ -64,6 +63,7 @@ public class BackEndServer {
 
     private static HttpServerOperationBuilderContext startHttpEmulatorLargePayload() throws IOException {
         System.out.println("Http Server Large Payload");
+        String s = readFile();
         return Emulator.getHttpEmulator().server()
 
                 .given(
@@ -75,7 +75,7 @@ public class BackEndServer {
                         request().withMethod(HttpMethod.POST).withPath("/response")
                 )
                 .then(
-                        response().withBody(new File("1MB.txt")).withStatusCode(HttpResponseStatus.OK)
+                        response().withBody(s).withStatusCode(HttpResponseStatus.OK)
                 )
 
                 .operation().start();
@@ -366,6 +366,29 @@ public class BackEndServer {
                         response().withStatusCode(HttpResponseStatus.OK).withBody(new File("1MB.txt"))
                 )
                 .operation().start();
+    }
+
+    //Method for reading files Param : Path
+    public static String readFile()
+    {
+        String fileName = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/EmulatorServer/1MB.txt";
+        String line = null;
+        String st = "";
+        try {
+            FileReader fileReader = new FileReader(fileName);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            while((line = bufferedReader.readLine()) != null) {
+                st=st+line;
+            }
+           bufferedReader.close();
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println("Unable to open file '" + fileName + "'");
+        }
+        catch(IOException ex) {
+            System.out.println("Error reading file '" + fileName + "'");
+        }
+        return st;
     }
 }
 
