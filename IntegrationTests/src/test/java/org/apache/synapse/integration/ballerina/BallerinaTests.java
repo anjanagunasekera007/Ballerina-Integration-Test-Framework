@@ -54,53 +54,54 @@ public class BallerinaTests {
 //
 //    }
 
-    @Test
-    public void testClientSlowWriting() {
-        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
-                .client()
-                .given(
-                        HttpClientConfigBuilderContext.configure()
-                                .host("127.0.0.1")
-                                .port(Integer.parseInt("9090"))
-                )
-                .when(
-                        HttpClientRequestBuilderContext.request().withPath(path)
-                                .withMethod(HttpMethod.POST).withBody(plainFile)
-                )
-                .then(
-                        HttpClientResponseBuilderContext.response().assertionIgnore()
-                )
-                .operation()
-                .send();
-        Assert.assertEquals(responseBody, response.getReceivedResponseContext().getResponseBody());
-//        Assert.assertEquals(HttpHeaders.Values.APPLICATION_JSON,
-//                            response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE));
-    }
+//    @Test
+//    public void testClientSlowWriting() {
+//        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+//                .client()
+//                .given(
+//                        HttpClientConfigBuilderContext.configure()
+//                                .host("127.0.0.1")
+//                                .port(Integer.parseInt("9090"))
+//                )
+//                .when(
+//                        HttpClientRequestBuilderContext.request().withPath(path)
+//                                .withMethod(HttpMethod.POST).withBody(plainFile)
+//                )
+//                .then(
+//                        HttpClientResponseBuilderContext.response().assertionIgnore()
+//                )
+//                .operation()
+//                .send();
+//        Assert.assertEquals(responseBody, response.getReceivedResponseContext().getResponseBody());
+////        Assert.assertEquals(HttpHeaders.Values.APPLICATION_JSON,
+////                            response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE));
+//    }
 
 
-    @Test
-    public void testClientSlowReading() {
-        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
-                .client()
-                .given(
-                        HttpClientConfigBuilderContext.configure()
-                                .host("127.0.0.1")
-                                .port(Integer.parseInt("9090"))
-                )
-                .when(
-                        HttpClientRequestBuilderContext.request().withPath(path)
-                                .withMethod(HttpMethod.POST).withBody(plainFile)
-                )
-                .then(
-                        HttpClientResponseBuilderContext.response().assertionIgnore()
-                )
-                .operation()
-                .send();
-        Assert.assertEquals(responseBody, response.getReceivedResponseContext().getResponseBody());
-//        Assert.assertEquals(HttpHeaders.Values.APPLICATION_JSON,
-//                            response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE));
-    }
+//    @Test
+//    public void testClientSlowReading() {
+//        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+//                .client()
+//                .given(
+//                        HttpClientConfigBuilderContext.configure()
+//                                .host("127.0.0.1")
+//                                .port(Integer.parseInt("9090"))
+//                )
+//                .when(
+//                        HttpClientRequestBuilderContext.request().withPath(path)
+//                                .withMethod(HttpMethod.POST).withBody(plainFile)
+//                )
+//                .then(
+//                        HttpClientResponseBuilderContext.response().assertionIgnore()
+//                )
+//                .operation()
+//                .send();
+//        Assert.assertEquals(responseBody, response.getReceivedResponseContext().getResponseBody());
+////        Assert.assertEquals(HttpHeaders.Values.APPLICATION_JSON,
+////                            response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE));
+//    }
 
+    //==================
     @Test
     public void testClientDisableKeepAlive() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
@@ -127,6 +128,8 @@ public class BallerinaTests {
         Assert.assertEquals(response.getReceivedResponse().headers().get(HttpHeaders.Names.CONNECTION),
                             HttpHeaders.Values.CLOSE);
     }
+
+    //=========================================
 
     @Test
     public void testDisableChunking() {

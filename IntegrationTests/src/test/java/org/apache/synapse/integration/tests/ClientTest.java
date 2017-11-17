@@ -18,6 +18,7 @@
 
 package org.apache.synapse.integration.tests;
 
+import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -39,6 +40,8 @@ public class ClientTest extends BaseTest {
     private String pathLargePayload = "/services/normal_server/largepayload";
     private String pathSlowReading = "/services/normal_server/slowreading";
     private String pathSlowWriting = "/services/normal_server/slowriting";
+    private String pathChunkingDisabled = "/services/normal_server/chunkingdisabled";
+    private String pathServerDisconnect = "/services/normal_server/servicedisconnect";
 
 
     private String responseBody = "{\"glossary\":{\"title\":\"exampleglossary\",\"GlossDiv\":{\"title\":\"S\"," +
@@ -64,7 +67,7 @@ public class ClientTest extends BaseTest {
     @BeforeClass
     public void initParameters() throws Exception {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start2");
-        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.94.0-SNAPSHOT/");
+        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
         postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Test.bal");
 //        postMethod.addParameter("Config", "config.xml");
         HttpClient httpClient = new HttpClient();
@@ -167,6 +170,51 @@ public class ClientTest extends BaseTest {
 
     }
 
+//    @Test
+//    public void testDisableChunking() {
+//        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+//                .client()
+//                .given(
+//                        HttpClientConfigBuilderContext.configure()
+//                                .host("127.0.0.1")
+//                                .port(Integer.parseInt("9090"))
+//                )
+//                .when(
+//                        HttpClientRequestBuilderContext.request().withPath(pathChunkingDisabled)
+//                                .withMethod(HttpMethod.POST).withBody(responseBody)
+//                )
+//                .then(
+//                        HttpClientResponseBuilderContext.response().assertionIgnore()
+//                )
+//                .operation()
+//                .send();
+//        Assert.assertEquals(responseBody, response.getReceivedResponseContext().getResponseBody());
+//    }
+
+
+    @Test
+    public void testServerDisconnectPartially() {
+        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+                .client()
+                .given(
+                        HttpClientConfigBuilderContext.configure()
+                                .host("127.0.0.1")
+                                .port(Integer.parseInt("9090"))
+                                .withPartialWriteConnectionDrop()
+                )
+                .when(
+                        HttpClientRequestBuilderContext.request().withPath(pathServerDisconnect)
+                                .withMethod(HttpMethod.POST).withBody(xmlBodySmall)
+                )
+                .then(
+                        HttpClientResponseBuilderContext.response().assertionIgnore()
+                )
+                .operation()
+                .send();
+
+        Assert.assertNull(response);
+    }
+
 
       public String readFile(String filePath) {
         String fileName = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/EmulatorServer/1MB.txt";
@@ -186,6 +234,8 @@ public class ClientTest extends BaseTest {
         }
         return st;
     }
+
+
 
 
     @AfterClass

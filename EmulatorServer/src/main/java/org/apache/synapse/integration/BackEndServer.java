@@ -177,7 +177,7 @@ public class BackEndServer {
                         request().withMethod(HttpMethod.POST).withPath("/disabled")
                 )
                 .then(
-                        response().withBody("Chunking disabled").withStatusCode(HttpResponseStatus.OK)
+                        response().withBody("@{body}").withStatusCode(HttpResponseStatus.OK)
                 )
 
                 .operation().start();
