@@ -86,7 +86,7 @@ public class BallerinaServerAgent {
     @POST
     @Path("/stop")
     public synchronized void stopService() {
-        killProcess("9009");
+        killProcess("9090");
 
     }
 

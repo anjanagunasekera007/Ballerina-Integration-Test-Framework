@@ -32,15 +32,13 @@
         </packages>
     </test>
 
-    <!--
+
     <test name="class-tests" verbose="2">
         <classes>
-            <class name="Http10ClientTest"/>
-            <class name="ClientTest"/>
-            <class name="ServerTest"/>
-            <class name="CommonTest"/>
+            <class name="org.ballerinalang.integration.tests.PayloadTests.PayloadTest"/>
+            <class name="org.ballerinalang.integration.tests.NetworkTest.ConnectionDrop"/>
         </classes>
     </test>
-    -->
+
 
 </suite>

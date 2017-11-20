@@ -79,7 +79,6 @@ public class ClientTest {
         postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Test-Framework-Bals/TestX.bal");
 //        postMethod.addParameter("Config", "config.xml");
         HttpClient httpClient = new HttpClient();
-
         httpClient.executeMethod(postMethod);
     }
 
@@ -107,31 +106,31 @@ public class ClientTest {
 
     }
 
-    @Test
-    public void testServerSendingLargePayload() {
-
-        String s = readFile(largeFilePath);
-
-        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
-                .client()
-                .given(
-                        HttpClientConfigBuilderContext.configure()
-                                .host("127.0.0.1")
-                                .port(Integer.parseInt("9090"))
-                )
-                .when(
-                        HttpClientRequestBuilderContext.request().withPath(pathLargePayload)
-                                .withMethod(HttpMethod.POST).withBody("Recieve Large Payload")
-
-                )
-                .then(
-                        HttpClientResponseBuilderContext.response().assertionIgnore()
-                )
-                .operation()
-                .send();
-        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody().toString(), s);
-
-    }
+//    @Test
+//    public void testServerSendingLargePayload() {
+//
+//        String s = readFile(largeFilePath);
+//
+//        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+//                .client()
+//                .given(
+//                        HttpClientConfigBuilderContext.configure()
+//                                .host("127.0.0.1")
+//                                .port(Integer.parseInt("9090"))
+//                )
+//                .when(
+//                        HttpClientRequestBuilderContext.request().withPath(pathLargePayload)
+//                                .withMethod(HttpMethod.POST).withBody("Recieve Large Payload")
+//
+//                )
+//                .then(
+//                        HttpClientResponseBuilderContext.response().assertionIgnore()
+//                )
+//                .operation()
+//                .send();
+//        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody().toString(), s);
+//
+//    }
 
     @Test
     public void testServerSlowReading() {
@@ -199,68 +198,68 @@ public class ClientTest {
 //        Assert.assertEquals(responseBody, response.getReceivedResponseContext().getResponseBody());
 //    }
 
+//
+//    @Test
+//    public void testServerDisconnectPartially() {
+//        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+//                .client()
+//                .given(
+//                        HttpClientConfigBuilderContext.configure()
+//                                .host("127.0.0.1")
+//                                .port(Integer.parseInt("9090"))
+//                                .withPartialWriteConnectionDrop()
+//                )
+//                .when(
+//                        HttpClientRequestBuilderContext.request().withPath(pathServerDisconnect)
+//                                .withMethod(HttpMethod.POST).withBody(xmlBodySmall)
+//                )
+//                .then(
+//                        HttpClientResponseBuilderContext.response().assertionIgnore()
+//                )
+//                .operation()
+//                .send();
+//
+//        Assert.assertNull(response);
+//    }
 
-    @Test
-    public void testServerDisconnectPartially() {
-        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
-                .client()
-                .given(
-                        HttpClientConfigBuilderContext.configure()
-                                .host("127.0.0.1")
-                                .port(Integer.parseInt("9090"))
-                                .withPartialWriteConnectionDrop()
-                )
-                .when(
-                        HttpClientRequestBuilderContext.request().withPath(pathServerDisconnect)
-                                .withMethod(HttpMethod.POST).withBody(xmlBodySmall)
-                )
-                .then(
-                        HttpClientResponseBuilderContext.response().assertionIgnore()
-                )
-                .operation()
-                .send();
-
-        Assert.assertNull(response);
-    }
-
-    @Test
-    public void testMalformedPayload() {
-        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
-                .client()
-                .given(
-                        HttpClientConfigBuilderContext.configure()
-                                .host("127.0.0.1")
-                                .port(Integer.parseInt("9090"))
-                )
-                .when(
-                        HttpClientRequestBuilderContext.request().withPath(pathMalformedPayload)
-                                .withMethod(HttpMethod.POST).withXmlPayload("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                                "<note>\n" +
-                                "  <to>Tove</to>\n" +
-                                "  <from>Jani</from>\n" +
-                                "  <heading>Reminder</heading>\n" +
-                                "  <body>Don't forget me this weekend!</body>\n" +
-                                "</note>")
-                )
-                .then(
-                        HttpClientResponseBuilderContext.response().assertionIgnore()
-                )
-                .operation()
-                .send();
-        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(),"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<note>\n" +
-                "  <to>Tove</to>\n" +
-                "  <from>Jani</from>\n" +
-                "  <heading>Reminder</heading>\n" +
-                "  <body>Don't forget me this weekend!</body>\n" +
-                "</note>");
-//        Assert.assertEquals(response.getReceivedResponseContext().getResponseStatus(),
-//                HttpResponseStatus.INTERNAL_SERVER_ERROR,
-//                "Status code should be 500 for malformed payload");
-    }
+//    @Test
+//    public void testMalformedPayload() {
+//        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+//                .client()
+//                .given(
+//                        HttpClientConfigBuilderContext.configure()
+//                                .host("127.0.0.1")
+//                                .port(Integer.parseInt("9090"))
+//                )
+//                .when(
+//                        HttpClientRequestBuilderContext.request().withPath(pathMalformedPayload)
+//                                .withMethod(HttpMethod.POST).withXmlPayload("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+//                                "<note>\n" +
+//                                "  <to>Tove</to>\n" +
+//                                "  <from>Jani</from>\n" +
+//                                "  <heading>Reminder</heading>\n" +
+//                                "  <body>Don't forget me this weekend!</body>\n" +
+//                                "</note>")
+//                )
+//                .then(
+//                        HttpClientResponseBuilderContext.response().assertionIgnore()
+//                )
+//                .operation()
+//                .send();
+//        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(),"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+//                "<note>\n" +
+//                "  <to>Tove</to>\n" +
+//                "  <from>Jani</from>\n" +
+//                "  <heading>Reminder</heading>\n" +
+//                "  <body>Don't forget me this weekend!</body>\n" +
+//                "</note>");
+////        Assert.assertEquals(response.getReceivedResponseContext().getResponseStatus(),
+////                HttpResponseStatus.INTERNAL_SERVER_ERROR,
+////                "Status code should be 500 for malformed payload");
+//    }
 
 
-      public String readFile(String filePath) {
+    public String readFile(String filePath) {
         String line = null;
         String st = "";
         try {
@@ -283,7 +282,7 @@ public class ClientTest {
 
     @AfterClass
     public void StopAgent() throws IOException {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stopagent");
+        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
     }
