@@ -281,10 +281,10 @@ public class ClientTest {
 
 
 
-//    @AfterClass
-//    public void StopAgent() throws IOException {
-//        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stopagent");
-//        HttpClient httpClient = new HttpClient();
-//        httpClient.executeMethod(postMethod);
-//    }
+    @AfterClass
+    public void StopAgent() throws IOException {
+        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stopagent");
+        HttpClient httpClient = new HttpClient();
+        httpClient.executeMethod(postMethod);
+    }
 }
