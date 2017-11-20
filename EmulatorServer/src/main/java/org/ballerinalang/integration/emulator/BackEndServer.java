@@ -227,15 +227,9 @@ public class BackEndServer {
                         request().withMethod(HttpMethod.POST).withPath("/payload")
                 )
                 .then(
-                        response().withBody("Malformed XML payload").withStatusCode(HttpResponseStatus.OK).withBody(
-                                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                                        "<note>\n" +
-                                        "  <to>Tove<to>\n" +
-                                        "  <from>Jani</from>\n" +
-                                        "  <heading>Reminder</heading>\n" +
-                                        "  <body>Don't forget me this weekend!</body>\n" +
-                                        "</note>")
-                                .withHeader("Content-Type", "application/xml").withHeader("wso2", "123")
+                        response().withBody("@{body}").withStatusCode(HttpResponseStatus.OK)
+                                .withHeader("Content-Type", "application/xml").
+                                 withHeader("wso2", "123")
                 )
                 .operation()
                 .start();
