@@ -18,27 +18,27 @@
 
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="SynapseIntegrationTestsuite">
+<suite name="BallerinaIntegrationTestsuite">
     <listeners>
-        <listener class-name="org.apache.synapse.integration.framework.TestExecutionListener"/>
+        <listener class-name="org.ballerinalang.integration.tests.framework.TestExecutionListener"/>
     </listeners>
 
 
     <!--<parameter name="useDefaultListeners" value="false"/>-->
 
-    <test name="synapse-integration-tests" verbose="2">
+    <test name="ballerina-integration-tests" verbose="2">
         <packages>
-            <package name="org.apache.synapse.integration.tests"/>
+            <package name="org.ballerinalang.integration.tests"/>
         </packages>
     </test>
 
     <!--
     <test name="class-tests" verbose="2">
         <classes>
-            <class name="org.apache.synapse.integration.tests.Http10ClientTest"/>
-            <class name="org.apache.synapse.integration.tests.ClientTest"/>
-            <class name="org.apache.synapse.integration.tests.ServerTest"/>
-            <class name="org.apache.synapse.integration.tests.CommonTest"/>
+            <class name="Http10ClientTest"/>
+            <class name="ClientTest"/>
+            <class name="ServerTest"/>
+            <class name="CommonTest"/>
         </classes>
     </test>
     -->

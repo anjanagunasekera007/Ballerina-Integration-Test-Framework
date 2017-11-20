@@ -1,4 +1,4 @@
-package org.apache.synapse.integration.ballerina;
+package org.ballerinalang.integration.tests;
 
 
 import io.netty.handler.codec.http.HttpHeaders;

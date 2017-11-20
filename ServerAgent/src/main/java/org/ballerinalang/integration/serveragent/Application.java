@@ -1,4 +1,4 @@
-package org.wso2.ballerina.test.framework;
+package org.ballerinalang.integration.serveragent;
 
 import org.wso2.msf4j.MicroservicesRunner;
 

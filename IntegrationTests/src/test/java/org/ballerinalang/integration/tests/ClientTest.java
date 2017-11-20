@@ -16,14 +16,12 @@
  * under the License.
  */
 
-package org.apache.synapse.integration.tests;
+package org.ballerinalang.integration.tests;
 
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.synapse.integration.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -36,7 +34,7 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 
 import java.io.*;
 
-public class ClientTest extends BaseTest {
+public class ClientTest {
     private String path = "/services/normal_server/normal";
     private String pathLargePayload = "/services/normal_server/largepayload";
     private String pathSlowReading = "/services/normal_server/slowreading";
@@ -70,7 +68,7 @@ public class ClientTest extends BaseTest {
     public void initParameters() throws Exception {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start2");
         postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
-        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/ServerAgent/src/main/java/org/wso2/ballerina/test/framework/Test.bal");
+        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Test-Framework-Bals/Test.bal");
 //        postMethod.addParameter("Config", "config.xml");
         HttpClient httpClient = new HttpClient();
 
@@ -217,7 +215,7 @@ public class ClientTest extends BaseTest {
         Assert.assertNull(response);
     }
 
-//    @Test
+    @Test
     public void testMalformedPayload() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()

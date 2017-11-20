@@ -16,23 +16,9 @@
  * under the License.
  */
 
-package org.apache.synapse.integration.tests;
+package org.ballerinalang.integration.tests;
 
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpVersion;
-import org.apache.synapse.integration.BaseTest;
-import org.apache.synapse.integration.utils.TestUtils;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-import org.wso2.carbon.protocol.emulator.dsl.Emulator;
-import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBuilderContext;
-import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestBuilderContext;
-import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseBuilderContext;
-import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
-
-import java.io.IOException;
-
-public class Http10ClientTest extends BaseTest {
+public class Http10ClientTest {
 
 //    @Override
 //    protected String getSynapseConfig() throws IOException {

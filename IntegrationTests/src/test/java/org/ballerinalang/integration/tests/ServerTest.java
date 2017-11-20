@@ -16,25 +16,11 @@
  * under the License.
  */
 
-package org.apache.synapse.integration.tests;
-
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import org.apache.synapse.integration.BaseTest;
-import org.apache.synapse.integration.utils.TestUtils;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-import org.wso2.carbon.protocol.emulator.dsl.Emulator;
-import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBuilderContext;
-import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestBuilderContext;
-import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseBuilderContext;
-import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
+package org.ballerinalang.integration.tests;
 
 import java.io.File;
-import java.io.IOException;
 
-public class ServerTest extends BaseTest{
+public class ServerTest {
     private static final String XML_FILE_100KB = "src/test/resources/files/100KB.xml";
 
     private File plainFile = new File("src/test/resources/files/100KB.txt");

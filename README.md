@@ -1,4 +1,4 @@
-# WSO2 Synapse Engine Test Framework
+# Ballerina Integration Test Framework
 
 This repo consists of the components required to run the distributed synapse integration tests.
 

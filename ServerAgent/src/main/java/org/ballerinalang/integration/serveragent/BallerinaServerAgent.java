@@ -1,4 +1,4 @@
-package org.wso2.ballerina.test.framework;
+package org.ballerinalang.integration.serveragent;
 /*
  * Copyright (c) 2017, WSO2 Inc. (http://wso2.com) All Rights Reserved.
  *
@@ -23,12 +23,8 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.util.concurrent.TimeUnit;
+
 /**
  * This is a Agent to run in ballerina server machine
  *
@@ -40,7 +36,7 @@ public class BallerinaServerAgent {
     private int httpServerPort = 9099;
 
 
-    private static final Log log = LogFactory.getLog(org.wso2.ballerina.test.framework.BallerinaServerAgent.class);
+    private static final Log log = LogFactory.getLog(BallerinaServerAgent.class);
 
     private Process process;
 

@@ -1,4 +1,4 @@
-package org.apache.synapse.integration;
+package org.ballerinalang.integration.emulator;
 
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;

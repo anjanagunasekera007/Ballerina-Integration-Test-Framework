@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.apache.synapse.integration.framework;
+package org.ballerinalang.integration.tests.framework;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
