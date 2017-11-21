@@ -34,7 +34,7 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 
 import java.io.*;
 
-public class ClientTest {
+public class ClientTests {
     private String path = "/services/normal_server/normal";
     private String pathLargePayload = "/services/normal_server/largepayload";
     private String pathSlowReading = "/services/normal_server/slowreading";
