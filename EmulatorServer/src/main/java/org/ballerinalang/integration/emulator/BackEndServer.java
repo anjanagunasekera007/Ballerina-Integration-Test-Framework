@@ -37,6 +37,8 @@ public class BackEndServer {
         startHttpInvalidSpec();
         startHttpEmulatorSlowWritingLargePayload();
         startHttpEmulatorNormal();
+
+//        startHttpEmulatorConstantLargePayload();
     }
 
     private static HttpServerOperationBuilderContext startHttpEmulatorNormal() throws IOException {
@@ -285,20 +287,19 @@ public class BackEndServer {
     private static HttpServerOperationBuilderContext startHttpEmulator() {
         return Emulator.getHttpEmulator().server()
                 .given(
-                        configure().host(hostIp).port(6077).context("/normal").withEnableWireLog()
+                        configure().host(hostIp).port(6077).context("/constant").withEnableWireLog()
                 )
 
                 .when(
                         request().withMethod(HttpMethod.POST).withPath("/server")
                 )
                 .then(
-                        response().withBody("Malformed JSON payload").withStatusCode(HttpResponseStatus.OK).withBody(
-                                "{\"glossary\":{\"title\":\"exampleglossary\",\"GlossDiv\":{\"title\":\"S\"," +
-                                        "\"GlossList\":{\"GlossEntry\":{\"ID\":\"SGML\",\"SortAs\":\"SGML\"," +
-                                        "\"GlossTerm\":\"StandardGeneralizedMarkupLanguage\",\"Acronym\":\"SGML\"," +
-                                        "\"Abbrev\":\"ISO8879:1986\",\"GlossDef\":{\"para\":\"Ameta-markuplanguage," +
-                                        "usedtocreatemarkuplanguagessuchasDocBook.\",\"GlossSeeAlso\":[\"GML\"," +
-                                        "\"XML\"]},\"GlossSee\":\"markup\"}}}}}")
+                        response().withBody("{\"glossary\":{\"title\":\"exampleglossary\",\"GlossDiv\":{\"title\":\"S\"," +
+                                "\"GlossList\":{\"GlossEntry\":{\"ID\":\"SGML\",\"SortAs\":\"SGML\"," +
+                                "\"GlossTerm\":\"StandardGeneralizedMarkupLanguage\",\"Acronym\":\"SGML\"," +
+                                "\"Abbrev\":\"ISO8879:1986\",\"GlossDef\":{\"para\":\"Ameta-markuplanguage," +
+                                "usedtocreatemarkuplanguagessuchasDocBook.\",\"GlossSeeAlso\":[\"GML\"," +
+                                "\"XML\"]},\"GlossSee\":\"markup\"}}}}}").withStatusCode(HttpResponseStatus.OK)
                                 .withHeader("Content-Type", "application/json")
                 )
 
@@ -361,6 +362,23 @@ public class BackEndServer {
                 )
                 .operation().start();
     }
+
+//    //startHttpEmulatorConstantLargePayload
+//    private static HttpServerOperationBuilderContext startHttpEmulatorConstantLargePayload() {
+//        return Emulator.getHttpEmulator().server()
+//                .given(
+//                        configure().host(hostIp).port(6081).context("/constant").withEnableWireLog()
+//                                .withWritingDelay(3000)
+//                )
+//
+//                .when(
+//                        request().withMethod(HttpMethod.POST).withPath("/payload")
+//                )
+//                .then(
+//                        response().withStatusCode(HttpResponseStatus.OK).withBody(new File("1MB.txt"))
+//                )
+//                .operation().start();
+//    }
 
     //Method for reading files Param : Path
     public static String readFile()

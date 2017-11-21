@@ -37,6 +37,7 @@
         <classes>
             <class name="org.ballerinalang.integration.tests.PayloadTests.PayloadTest"/>
             <class name="org.ballerinalang.integration.tests.NetworkTest.ConnectionDrop"/>
+            <class name="org.ballerinalang.integration.tests.SingleClientTest.SingleClientTests"/>
         </classes>
     </test>
 
