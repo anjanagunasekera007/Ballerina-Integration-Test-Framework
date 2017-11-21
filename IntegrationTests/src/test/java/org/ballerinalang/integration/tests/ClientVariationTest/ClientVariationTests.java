@@ -35,7 +35,7 @@ public class ClientVariationTests {
 
     @BeforeClass
     public void initParameters() throws Exception {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start2");
+        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
         postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-" +
                 "distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
         postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-" +

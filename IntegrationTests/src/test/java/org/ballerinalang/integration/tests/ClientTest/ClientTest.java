@@ -50,8 +50,10 @@ public class ClientTest {
     private File plainFile = new File("src/test/resources/files/100KB.txt");
     private File largeFile = new File("src/test/resources/files/1MB.txt");
 
-    private String largeFilePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/EmulatorServer/1MB.txt";
-    private String plainFilePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/IntegrationTests/src/test/resources/files/100KB.txt";
+    private String largeFilePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/EmulatorSe" +
+            "rver/1MB.txt";
+    private String plainFilePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/Integratio" +
+            "nTests/src/test/resources/files/100KB.txt";
 
 
     private String xmlBodySmall = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -60,9 +62,11 @@ public class ClientTest {
 
     @BeforeClass
     public void initParameters() throws Exception {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start2");
-        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
-        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Test-Framework-Bals/Test.bal");
+        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
+        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distri" +
+                "bution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
+        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-T" +
+                "est-Framework-Bals/Test.bal");
 //        postMethod.addParameter("Config", "config.xml");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);

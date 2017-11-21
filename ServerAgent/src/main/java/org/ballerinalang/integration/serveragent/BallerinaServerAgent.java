@@ -17,68 +17,43 @@ package org.ballerinalang.integration.serveragent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import javax.ws.rs.*;
-import java.io.File;
-import java.util.Arrays;
-import java.util.stream.Stream;
+
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
- * This is a Agent to run in ballerina server machine
+ * This is a Agent to run in ballerina server machine.
  *
  * @since 1.0-SNAPSHOT
  */
 @Path("/ballerinaagent")
 public class BallerinaServerAgent {
 
-    private int httpServerPort = 9099;
-
-
     private static final Log log = LogFactory.getLog(BallerinaServerAgent.class);
 
-    private Process process;
-
-
     @POST
-    @Path("/start2")
-    public void startService2(@FormParam("ballerinaHome") String home,
-                              @FormParam("ballerinaFilePath") String filePath,
-                              @FormParam("config") String configPath) {
-
-        String[] cmdArray;
-        File commandDir = new File(home);
-
-        String serverHome = home;
+    @Path("/start")
+    public void startService(@FormParam("ballerinaHome") String home,
+                             @FormParam("ballerinaFilePath") String filePath,
+                             @FormParam("config") String configPath) throws ServiceStartException {
         String[] args = {filePath};
-        String scriptName = "ballerina";
-
-
+        String[] cmdArray = {"bash", "bin/ballerina", "run"};
+        String[] cmdArgs = Stream.concat(Arrays.stream(cmdArray), Arrays.stream(args))
+                .toArray(String[]::new);
+        ProcessBuilder pb = new ProcessBuilder(cmdArgs);
+        pb.directory(new File(home));
         try {
-            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-                commandDir = new File(serverHome + File.separator + "bin");
-                cmdArray = new String[]{"cmd.exe", "/c", scriptName + ".bat", "run"};
-                String[] cmdArgs = Stream.concat(Arrays.stream(cmdArray), Arrays.stream(args))
-                        .toArray(String[]::new);
-                process = Runtime.getRuntime().exec(cmdArgs, null, commandDir);
-
-            } else {
-                cmdArray = new String[]{"bash", "bin/" + scriptName, "run"};
-                String[] cmdArgs = Stream.concat(Arrays.stream(cmdArray), Arrays.stream(args))
-                        .toArray(String[]::new);
-                ProcessBuilder pb = new ProcessBuilder(cmdArgs);
-                pb.directory(new File(serverHome));
-
-                process = pb.inheritIO().start();
-
-                Thread.sleep(3000);
-
-            }
-
-        } catch (Exception e) {
-            log.error("Error while starting ballerina service", e);
-
+            pb.inheritIO().start();
+            Thread.sleep(3000);
+        } catch (IOException e) {
+            throw new ServiceStartException("Service " + filePath + " start failed", e);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -94,21 +69,19 @@ public class BallerinaServerAgent {
     @Path("/stopagent")
     public synchronized void stopAgent() throws Exception {
 
-       killProcess("9090");
-       killProcess("9001");
+        killProcess("9090");
+        killProcess("9001");
     }
 
 
-    public static void killProcess(String port)
-    {
-        String cmd = "fuser -k "+port+"/tcp";
+    public static void killProcess(String port) {
+        String cmd = "fuser -k " + port + "/tcp";
         try {
             Process p = Runtime.getRuntime().exec(cmd);
         } catch (IOException e) {
-            log.error("Unable to shut down server at 9090 ",e);
+            log.error("Unable to shut down server at 9090 ", e);
         }
     }
-
 
 
 }
