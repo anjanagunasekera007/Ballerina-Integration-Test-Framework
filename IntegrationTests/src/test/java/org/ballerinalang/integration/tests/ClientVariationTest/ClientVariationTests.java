@@ -33,12 +33,6 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 
 public class ClientVariationTests {
 
-//    @Override
-//    protected String getSynapseConfig() throws IOException {
-//        return TestUtils.getSynapseConfig("http10Client.xml");
-//    }
-
-
     @BeforeClass
     public void initParameters() throws Exception {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start2");

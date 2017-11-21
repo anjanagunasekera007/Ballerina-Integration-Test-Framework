@@ -60,7 +60,7 @@ public class ConnectionDrop {
 
     @AfterClass
     public void StopAgent() throws IOException {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
+        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stopagent");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
     }

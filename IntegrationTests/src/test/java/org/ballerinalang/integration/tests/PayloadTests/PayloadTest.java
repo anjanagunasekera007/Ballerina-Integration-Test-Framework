@@ -28,21 +28,7 @@ public class PayloadTest {
     private String plainFilePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/IntegrationTests/src/test/resources/files/100KB.txt";
 
 
-    private String processingPath = "/services/content_type";
-
-    private String xmlBodySmall = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            "<note>\n" +
-            "</note>";
-
-    private String malformedXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            "<note>\n" +
-            "  <to>Tove</to>\n" +
-            "  <from>Jani</from>\n" +
-            "  <heading>Reminder</heading>\n" +
-            "  <body>Don't forget me this weekend!</body>\n" +
-            "</note>";
-
-    @BeforeClass
+        @BeforeClass
     public void initParameters() throws Exception {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start2");
         postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
