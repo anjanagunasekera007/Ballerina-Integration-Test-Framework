@@ -77,7 +77,7 @@ public class BackEndServer {
                         request().withMethod(HttpMethod.POST).withPath("/response")
                 )
                 .then(
-                        response().withBody(s).withStatusCode(HttpResponseStatus.OK)
+                        response().withBody(new File("1MB.txt")).withStatusCode(HttpResponseStatus.OK)
                 )
 
                 .operation().start();

@@ -40,7 +40,7 @@ public class PayloadTest {
 
 
     @Test
-    public void testServerSendingLargePayload() {
+    public void testServerSendingLargePayload() throws IOException {
 
         String s = readFile(largeFilePath);
 
@@ -61,7 +61,11 @@ public class PayloadTest {
                 )
                 .operation()
                 .send();
-        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody().toString(), s);
+//        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody().toString(), s);
+        Assert.assertEquals(getFileBody(new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
+                        "IntegrationTests/src/test/resources/files/1MB.txt")),
+                response.getReceivedResponseContext().getResponseBody(),
+                "The received response body is not same as the expected");
 
     }
 
@@ -143,6 +147,27 @@ public class PayloadTest {
             System.out.println("Error reading file '" + filePath + "'");
         }
         return st;
+    }
+
+    public static String getFileBody(File filePath) throws IOException {
+
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(filePath);
+            int c;
+            StringBuilder stringBuilder = new StringBuilder();
+            while ((c = fileInputStream.read()) != -1) {
+                stringBuilder.append(c);
+            }
+            String content = stringBuilder.toString();
+            content = content.replace("\n", "").replace("\r", "");
+
+            return content;
+        } finally {
+            if (fileInputStream != null) {
+                fileInputStream.close();
+            }
+        }
     }
 
     @AfterClass
