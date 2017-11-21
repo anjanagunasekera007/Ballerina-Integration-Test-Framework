@@ -18,6 +18,7 @@ import io.netty.handler.codec.http.HttpMethod;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.protocol.emulator.dsl.Emulator;
@@ -73,6 +74,28 @@ public class SingleServerTests {
                 "The received response body is not same as the expected");
     }
 
+    @Test
+    public void testSlowResponse() {
+        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+                .client()
+                .given(
+                        HttpClientConfigBuilderContext.configure()
+                                .host("127.0.0.1")
+                                .port(Integer.parseInt("9090"))
+                )
+                .when(
+                        HttpClientRequestBuilderContext.request().withPath("/services/servers/slowresponse")
+                                .withMethod(HttpMethod.POST).withBody(plainFile)
+                )
+                .then(
+                        HttpClientResponseBuilderContext.response().assertionIgnore()
+                )
+                .operation()
+                .send();
+        Assert.assertEquals("Slowly responding backend", response.getReceivedResponseContext().getResponseBody(),
+                "The received response body is not same as the expected");
+    }
+
 
 
     public static String getFileBody(File filePath) throws IOException {
@@ -94,5 +117,13 @@ public class SingleServerTests {
                 fileInputStream.close();
             }
         }
+    }
+
+
+    @AfterClass
+    public void StopAgent() throws IOException {
+        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
+        HttpClient httpClient = new HttpClient();
+        httpClient.executeMethod(postMethod);
     }
 }
