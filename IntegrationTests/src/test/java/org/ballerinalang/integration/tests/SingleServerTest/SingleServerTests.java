@@ -141,6 +141,29 @@ public class SingleServerTests {
                 "The received response body is not same as the expected");
     }
 
+    @Test
+    public void testKeepAlive() {
+        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+                .client()
+                .given(
+                        HttpClientConfigBuilderContext.configure()
+                                .host("127.0.0.1")
+                                .port(Integer.parseInt("9090"))
+                )
+                .when(
+                        HttpClientRequestBuilderContext.request().withPath("/services/servers/keepalive")
+                                .withMethod(HttpMethod.POST).withBody(plainFile)
+                )
+                .then(
+                        HttpClientResponseBuilderContext.response().assertionIgnore()
+                )
+                .operation()
+                .send();
+        Assert.assertEquals("Keep alive", response.getReceivedResponseContext().getResponseBody(),
+                "The received response body is not same as the expected");
+    }
+
+
 
 
     public static String getFileBody(File filePath) throws IOException {
