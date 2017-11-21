@@ -1,6 +1,7 @@
 package org.ballerinalang.integration.tests.PayloadTests;
 
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.testng.Assert;
@@ -16,22 +17,10 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 import java.io.*;
 
 public class PayloadTest {
-    private String path = "/services/normal_server/normal";
     private String pathLargePayload = "/services/normal_server/largepayload";
-    private String pathSlowReading = "/services/normal_server/slowreading";
-    private String pathSlowWriting = "/services/normal_server/slowriting";
-    private String pathChunkingDisabled = "/services/normal_server/chunkingdisabled";
-    private String pathServerDisconnect = "/services/normal_server/servicedisconnect";
     private String pathMalformedPayload = "/services/normal_server/malformedpayload";
+    private String pathMalformedPayloadProcess = "/services/normal_server/malformedpayloadprocess";
 
-
-    private String responseBody = "{\"glossary\":{\"title\":\"exampleglossary\",\"GlossDiv\":{\"title\":\"S\"," +
-            "\"GlossList\":{\"GlossEntry\":{\"ID\":\"SGML\",\"SortAs\":\"SGML\"," +
-            "\"GlossTerm\":\"StandardGeneralizedMarkupLanguage\",\"Acronym\":\"SGML\"," +
-            "\"Abbrev\":\"ISO8879:1986\",\"GlossDef\":{\"para\":\"Ameta-markuplanguage," +
-            "usedtocreatemarkuplanguagessuchasDocBook.\",\"GlossSeeAlso\":[\"GML\"," +
-            "\"XML\"]},\"GlossSee\":\"markup\"}}}}}";
-    private String res = "Slowly responding backend";
     private File plainFile = new File("src/test/resources/files/100KB.txt");
     private File largeFile = new File("src/test/resources/files/1MB.txt");
 
@@ -57,7 +46,7 @@ public class PayloadTest {
     public void initParameters() throws Exception {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start2");
         postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
-        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Test-Framework-Bals/TestX.bal");
+        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Test-Framework-Bals/Test.bal");
 //        postMethod.addParameter("Config", "config.xml");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
@@ -121,9 +110,34 @@ public class PayloadTest {
                 "  <heading>Reminder</heading>\n" +
                 "  <body>Don't forget me this weekend!</body>\n" +
                 "</note>");
-//        Assert.assertEquals(response.getReceivedResponseContext().getResponseStatus(),
-//                HttpResponseStatus.INTERNAL_SERVER_ERROR,
-//                "Status code should be 500 for malformed payload");
+    }
+
+    @Test
+    public void testMalformedPayloadProcess() {
+        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+                .client()
+                .given(
+                        HttpClientConfigBuilderContext.configure()
+                                .host("127.0.0.1")
+                                .port(Integer.parseInt("9090"))
+                )
+                .when(
+                        HttpClientRequestBuilderContext.request().withPath(pathMalformedPayloadProcess)
+                                .withMethod(HttpMethod.POST).withXmlPayload("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                                "<note>\n" +
+                                "  <to>Tove</to>\n" +
+                                "  <from>Jani</from>\n" +
+                                "  <heading>Reminder</heading>\n" +
+                                "  <body>Don't forget me this weekend!</body>\n")
+                )
+                .then(
+                        HttpClientResponseBuilderContext.response().assertionIgnore()
+                )
+                .operation()
+                .send();
+        Assert.assertEquals(response.getReceivedResponseContext().getResponseStatus(),
+                HttpResponseStatus.INTERNAL_SERVER_ERROR,
+                "Status code should be 500 for malformed payload");
     }
 
 
@@ -144,9 +158,6 @@ public class PayloadTest {
         }
         return st;
     }
-
-
-
 
     @AfterClass
     public void StopAgent() throws IOException {

@@ -29,7 +29,7 @@ public class ConnectionDrop {
     public void initParameters() throws Exception {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start2");
         postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
-        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Test-Framework-Bals/TestX.bal");
+        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Test-Framework-Bals/Test.bal");
 //        postMethod.addParameter("Config", "config.xml");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
@@ -60,7 +60,7 @@ public class ConnectionDrop {
 
     @AfterClass
     public void StopAgent() throws IOException {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stopagent");
+        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
     }
