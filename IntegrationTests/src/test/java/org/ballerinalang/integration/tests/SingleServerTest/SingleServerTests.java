@@ -119,6 +119,28 @@ public class SingleServerTests {
                 "The received response body is not same as the expected");
     }
 
+    @Test
+    public void testWritingDelay() {
+        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+                .client()
+                .given(
+                        HttpClientConfigBuilderContext.configure()
+                                .host("127.0.0.1")
+                                .port(Integer.parseInt("9090"))
+                )
+                .when(
+                        HttpClientRequestBuilderContext.request().withPath("/services/servers/writingdelay")
+                                .withMethod(HttpMethod.POST).withBody("Slowly writing backend")
+                )
+                .then(
+                        HttpClientResponseBuilderContext.response().assertionIgnore()
+                )
+                .operation()
+                .send();
+        Assert.assertEquals("Slowly writing backend", response.getReceivedResponseContext().getResponseBody(),
+                "The received response body is not same as the expected");
+    }
+
 
 
     public static String getFileBody(File filePath) throws IOException {
