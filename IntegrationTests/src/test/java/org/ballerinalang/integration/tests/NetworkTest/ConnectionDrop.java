@@ -61,7 +61,7 @@ public class ConnectionDrop {
     }
 
     @AfterClass
-    public void StopAgent() throws IOException {
+    public void stopAgent() throws IOException {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);

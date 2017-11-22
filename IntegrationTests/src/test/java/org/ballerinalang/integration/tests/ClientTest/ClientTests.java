@@ -19,7 +19,6 @@
 package org.ballerinalang.integration.tests;
 
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.testng.Assert;
@@ -32,8 +31,12 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestB
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
+/**
+ *
+ */
 public class ClientTests {
     private String path = "/services/normal_server/normal";
     private String pathLargePayload = "/services/normal_server/largepayload";
@@ -142,7 +145,7 @@ public class ClientTests {
     }
 
     @AfterClass
-    public void StopAgent() throws IOException {
+    public void stopAgent() throws IOException {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);

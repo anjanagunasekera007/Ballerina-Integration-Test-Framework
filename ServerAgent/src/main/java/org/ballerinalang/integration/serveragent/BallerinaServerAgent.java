@@ -49,11 +49,12 @@ public class BallerinaServerAgent {
         pb.directory(new File(home));
         try {
             pb.inheritIO().start();
-            Thread.sleep(3000);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+            }
         } catch (IOException e) {
             throw new ServiceStartException("Service " + filePath + " start failed", e);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 
