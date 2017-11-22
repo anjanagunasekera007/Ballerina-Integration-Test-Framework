@@ -23,6 +23,7 @@ import io.netty.handler.codec.http.HttpVersion;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.protocol.emulator.dsl.Emulator;
@@ -30,6 +31,8 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBu
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
+
+import java.io.IOException;
 
 public class ClientVariationTests {
 
@@ -128,6 +131,13 @@ public class ClientVariationTests {
 
     private String getXmlBody() {
         return "<request>Http10ClientTest</request>";
+    }
+
+    @AfterClass
+    public void StopAgent() throws IOException {
+        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
+        HttpClient httpClient = new HttpClient();
+        httpClient.executeMethod(postMethod);
     }
 
  }
