@@ -35,12 +35,12 @@
 
     <test name="class-tests" verbose="2">
         <classes>
-                <class name="org.ballerinalang.integration.tests.PayloadTests.PayloadTest"/>
+                <!--<class name="org.ballerinalang.integration.tests.PayloadTests.PayloadTest"/>-->
                 <class name="org.ballerinalang.integration.tests.NetworkTest.ConnectionDrop"/>
                 <class name="org.ballerinalang.integration.tests.SingleClientTest.SingleClientTests"/>
                 <class name="org.ballerinalang.integration.tests.SingleServerTest.SingleServerTests"/>
                 <class name="org.ballerinalang.integration.tests.CommonTest.CommonTests"/>
-                <class name="org.ballerinalang.integration.tests.ConcurrentTest.ConcurrentTests"/>
+                <!--<class name="org.ballerinalang.integration.tests.ConcurrentTest.ConcurrentTests"/>-->
             </classes>
         </test>
 

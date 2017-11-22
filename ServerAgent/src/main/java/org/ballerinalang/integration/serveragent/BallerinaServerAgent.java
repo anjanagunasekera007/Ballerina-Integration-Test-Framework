@@ -1,4 +1,3 @@
-package org.ballerinalang.integration.serveragent;
 /*
  * Copyright (c) 2017, WSO2 Inc. (http://wso2.com) All Rights Reserved.
  *
@@ -14,6 +13,8 @@ package org.ballerinalang.integration.serveragent;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package org.ballerinalang.integration.serveragent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

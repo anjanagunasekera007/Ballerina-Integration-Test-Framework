@@ -1,4 +1,4 @@
-package org.ballerinalang.integration.tests;/*
+/*
 * Copyright (c) $today.year, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +13,7 @@ package org.ballerinalang.integration.tests;/*
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+package org.ballerinalang.integration.tests;
 
 import org.testng.Assert;
 

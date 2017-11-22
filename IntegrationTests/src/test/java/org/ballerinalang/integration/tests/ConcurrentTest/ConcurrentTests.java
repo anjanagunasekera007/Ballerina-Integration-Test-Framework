@@ -1,4 +1,4 @@
-package org.ballerinalang.integration.tests.ConcurrentTest;/*
+/*
 * Copyright (c) $today.year, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +13,8 @@ package org.ballerinalang.integration.tests.ConcurrentTest;/*
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+package org.ballerinalang.integration.tests.ConcurrentTest;
+
 
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.commons.httpclient.HttpClient;
@@ -44,28 +46,38 @@ public class ConcurrentTests {
                 "st-Framework-Bals/ConcurrentTest.bal");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
+
     }
 
     @Test(threadPoolSize = 6, invocationCount = 6, timeOut = 1000)
     public void testConcurrentNormalServer() throws IOException {
-        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
-                .client()
-                .given(
-                        HttpClientConfigBuilderContext.configure()
-                                .host("127.0.0.1")
-                                .port(Integer.parseInt("9090"))
-                )
-                .when(
-                        HttpClientRequestBuilderContext.request().withPath("/services/concurrent/largefile")
-                                .withMethod(HttpMethod.POST).withBody(largeFile)
-                )
-                .then(
-                        HttpClientResponseBuilderContext.response().assertionIgnore()
-                )
-                .operation()
-                .send();
-        Assert.assertEquals(TestUtils.getFileBody(largeFile), response.getReceivedResponseContext().getResponseBody(),
-                "The received response body is not same as the expected");
+
+        try {
+            HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+                    .client()
+                    .given(
+                            HttpClientConfigBuilderContext.configure()
+                                    .host("127.0.0.1")
+                                    .port(Integer.parseInt("9090"))
+                    )
+                    .when(
+                            HttpClientRequestBuilderContext.request().withPath("/services/concurrent/largefile")
+                                    .withMethod(HttpMethod.POST).withBody(largeFile)
+                    )
+                    .then(
+                            HttpClientResponseBuilderContext.response().assertionIgnore()
+                    )
+                    .operation()
+                    .send();
+            Assert.assertEquals(TestUtils.getFileBody(largeFile), response.getReceivedResponseContext().getResponseBody(),
+                    "The received response body is not same as the expected");
+
+        }catch (Throwable e)
+        {
+            System.out.println("EXCEPTION");
+            System.out.println(e.getMessage());
+
+        }
     }
 
     @AfterClass
