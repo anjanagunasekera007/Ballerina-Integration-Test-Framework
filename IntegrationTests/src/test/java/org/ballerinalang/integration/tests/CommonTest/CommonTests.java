@@ -29,13 +29,10 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 import org.ballerinalang.integration.tests.TestUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 public class CommonTests {
     private File largeFile = new File("src/test/resources/files/1MB.txt");
-    private File plainFile = new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
-            "IntegrationTests/src/test/resources/files/100KB.txt");
 
     @BeforeClass
     public void initParameters() throws Exception {
@@ -44,7 +41,6 @@ public class CommonTests {
                 "tion/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
         postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Te" +
                 "st-Framework-Bals/CommonTest.bal");
-//        postMethod.addParameter("Config", "config.xml");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
     }
@@ -116,29 +112,6 @@ public class CommonTests {
                 "Slowly reading backend",
                 "Slowly reading backend response did not receive correctly");
     }
-
-
-
-//    public static String getFileBody(File filePath) throws IOException {
-//
-//        FileInputStream fileInputStream = null;
-//        try {
-//            fileInputStream = new FileInputStream(filePath);
-//            int c;
-//            StringBuilder stringBuilder = new StringBuilder();
-//            while ((c = fileInputStream.read()) != -1) {
-//                stringBuilder.append(c);
-//            }
-//            String content = stringBuilder.toString();
-//            content = content.replace("\n", "").replace("\r", "");
-//
-//            return content;
-//        } finally {
-//            if (fileInputStream != null) {
-//                fileInputStream.close();
-//            }
-//        }
-//    }
 
     @AfterClass
     public void stopAgent() throws IOException {

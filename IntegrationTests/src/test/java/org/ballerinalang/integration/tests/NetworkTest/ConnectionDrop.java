@@ -23,8 +23,6 @@ public class ConnectionDrop {
             "<note>\n" +
             "</note>";
 
-
-
     @BeforeClass
     public void initParameters() throws Exception {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
@@ -32,7 +30,6 @@ public class ConnectionDrop {
                 "tion/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
         postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Te" +
                 "st-Framework-Bals/Test.bal");
-//        postMethod.addParameter("Config", "config.xml");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
     }

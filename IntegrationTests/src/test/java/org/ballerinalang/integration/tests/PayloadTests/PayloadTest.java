@@ -13,7 +13,6 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBu
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
-
 import java.io.*;
 
 public class PayloadTest {
@@ -21,19 +20,16 @@ public class PayloadTest {
     private String pathMalformedPayload = "/services/normal_server/malformedpayload";
     private String pathMalformedPayloadProcess = "/services/normal_server/malformedpayloadprocess";
 
-    private File plainFile = new File("src/test/resources/files/100KB.txt");
-    private File largeFile = new File("src/test/resources/files/1MB.txt");
-
-    private String largeFilePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/EmulatorServer/1MB.txt";
-    private String plainFilePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/IntegrationTests/src/test/resources/files/100KB.txt";
-
+    private String largeFilePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/" +
+            "EmulatorServer/1MB.txt";
 
         @BeforeClass
     public void initParameters() throws Exception {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
-        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
-        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Test-Framework-Bals/Test.bal");
-//        postMethod.addParameter("Config", "config.xml");
+        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/" +
+                "tools-distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
+        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/" +
+                "Ballerina-Integration-Test-Framework-Bals/Test.bal");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
     }
@@ -61,7 +57,6 @@ public class PayloadTest {
                 )
                 .operation()
                 .send();
-//        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody().toString(), s);
         Assert.assertEquals(getFileBody(new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
                         "IntegrationTests/src/test/resources/files/1MB.txt")),
                 response.getReceivedResponseContext().getResponseBody(),

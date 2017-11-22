@@ -43,11 +43,9 @@ public class ClientVariationTests {
                 "distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
         postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-" +
                 "Test-Framework-Bals/Test.bal");
-//        postMethod.addParameter("Config", "config.xml");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
     }
-
 
     /**
      * The client will use HTTP 1.0 while backend use HTTP 1.1 to communicate with Ballerina server.

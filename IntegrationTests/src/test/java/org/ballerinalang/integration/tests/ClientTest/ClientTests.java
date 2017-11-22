@@ -30,16 +30,13 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBu
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
-
-import java.io.File;
 import java.io.IOException;
 
 /**
- *
+ * This class contains normal test cases for Client
  */
 public class ClientTests {
     private String path = "/services/normal_server/normal";
-    private String pathLargePayload = "/services/normal_server/largepayload";
     private String pathSlowReading = "/services/normal_server/slowreading";
     private String pathSlowWriting = "/services/normal_server/slowriting";
 
@@ -49,15 +46,6 @@ public class ClientTests {
             "\"Abbrev\":\"ISO8879:1986\",\"GlossDef\":{\"para\":\"Ameta-markuplanguage," +
             "usedtocreatemarkuplanguagessuchasDocBook.\",\"GlossSeeAlso\":[\"GML\"," +
             "\"XML\"]},\"GlossSee\":\"markup\"}}}}}";
-
-    private File plainFile = new File("src/test/resources/files/100KB.txt");
-    private File largeFile = new File("src/test/resources/files/1MB.txt");
-
-    private String largeFilePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/EmulatorSe" +
-            "rver/1MB.txt";
-    private String plainFilePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/Integratio" +
-            "nTests/src/test/resources/files/100KB.txt";
-
 
     private String xmlBodySmall = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<note>\n" +
@@ -70,7 +58,6 @@ public class ClientTests {
                 "bution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
         postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-T" +
                 "est-Framework-Bals/Test.bal");
-//        postMethod.addParameter("Config", "config.xml");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
     }

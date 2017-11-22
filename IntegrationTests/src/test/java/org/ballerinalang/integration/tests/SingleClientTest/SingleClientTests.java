@@ -36,14 +36,6 @@ public class SingleClientTests {
             "usedtocreatemarkuplanguagessuchasDocBook.\",\"GlossSeeAlso\":[\"GML\"," +
             "\"XML\"]},\"GlossSee\":\"markup\"}}}}}";
 
-    private String xmlBody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            "<note>\n" +
-            "  <to>Tove</to>\n" +
-            "  <from>Jani</from>\n" +
-            "  <heading>Reminder</heading>\n" +
-            "  <body>Don't forget me this weekend!</body>\n" +
-            "</note>";
-
     @BeforeClass
     public void initParameters() throws Exception {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
@@ -51,7 +43,6 @@ public class SingleClientTests {
                 "tools-distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
         postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/" +
                 "Ballerina-Integration-Test-Framework-Bals/SingleClientTest.bal");
-//        postMethod.addParameter("Config", "config.xml");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
     }

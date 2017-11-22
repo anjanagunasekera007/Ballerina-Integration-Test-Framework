@@ -26,12 +26,9 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBu
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
-
+import org.ballerinalang.integration.tests.TestUtils;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-
-import static sun.security.krb5.SCDynamicStoreConfig.getConfig;
 
 public class SingleServerTests {
 
@@ -45,7 +42,6 @@ public class SingleServerTests {
                 "tion/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
         postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Te" +
                 "st-Framework-Bals/MultipleServersTest.bal");
-//        postMethod.addParameter("Config", "config.xml");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
     }
@@ -68,7 +64,7 @@ public class SingleServerTests {
                 )
                 .operation()
                 .send();
-        Assert.assertEquals(getFileBody(new File("/home/anjana/work/" +
+        Assert.assertEquals(TestUtils.getFileBody(new File("/home/anjana/work/" +
                         "Ballerina-Integration-Test-Framework/IntegrationTests/src/test/resources/files/1MB.txt")),
                 response.getReceivedResponseContext().getResponseBody(),
                 "The received response body is not same as the expected");
@@ -162,31 +158,6 @@ public class SingleServerTests {
         Assert.assertEquals("Keep alive", response.getReceivedResponseContext().getResponseBody(),
                 "The received response body is not same as the expected");
     }
-
-
-
-
-    public static String getFileBody(File filePath) throws IOException {
-
-        FileInputStream fileInputStream = null;
-        try {
-            fileInputStream = new FileInputStream(filePath);
-            int c;
-            StringBuilder stringBuilder = new StringBuilder();
-            while ((c = fileInputStream.read()) != -1) {
-                stringBuilder.append(c);
-            }
-            String content = stringBuilder.toString();
-            content = content.replace("\n", "").replace("\r", "");
-
-            return content;
-        } finally {
-            if (fileInputStream != null) {
-                fileInputStream.close();
-            }
-        }
-    }
-
 
     @AfterClass
     public void stopAgent() throws IOException {
