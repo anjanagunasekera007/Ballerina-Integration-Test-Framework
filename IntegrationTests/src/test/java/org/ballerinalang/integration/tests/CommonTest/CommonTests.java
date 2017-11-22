@@ -26,6 +26,7 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBu
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
+import org.ballerinalang.integration.tests.TestUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -66,7 +67,7 @@ public class CommonTests {
                 )
                 .operation()
                 .send();
-        Assert.assertEquals(getFileBody(largeFile), response.getReceivedResponseContext().getResponseBody(),
+        Assert.assertEquals(TestUtils.getFileBody(largeFile), response.getReceivedResponseContext().getResponseBody(),
                 "The received response body is not same as the expected");
     }
 
@@ -88,31 +89,56 @@ public class CommonTests {
                 )
                 .operation()
                 .send();
-        Assert.assertEquals(getFileBody(largeFile), response.getReceivedResponseContext().getResponseBody(),
+        Assert.assertEquals(TestUtils.getFileBody(largeFile), response.getReceivedResponseContext().getResponseBody(),
                 "The received response body is not same as the expected");
     }
 
-
-    public static String getFileBody(File filePath) throws IOException {
-
-        FileInputStream fileInputStream = null;
-        try {
-            fileInputStream = new FileInputStream(filePath);
-            int c;
-            StringBuilder stringBuilder = new StringBuilder();
-            while ((c = fileInputStream.read()) != -1) {
-                stringBuilder.append(c);
-            }
-            String content = stringBuilder.toString();
-            content = content.replace("\n", "").replace("\r", "");
-
-            return content;
-        } finally {
-            if (fileInputStream != null) {
-                fileInputStream.close();
-            }
-        }
+    @Test
+    public void testLargeFileClientSlowReadingBackend() throws Exception {
+        String payload = TestUtils.getContentAsString("src/test/resources/files/1MB.txt");
+        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+                .client()
+                .given(
+                        HttpClientConfigBuilderContext.configure()
+                                .host("127.0.0.1")
+                                .port(Integer.parseInt("9090"))
+                )
+                .when(
+                        HttpClientRequestBuilderContext.request().withPath("/services/common/readingdelay")
+                                .withMethod(HttpMethod.POST).withBody("Slowly reading backend")
+                )
+                .then(
+                        HttpClientResponseBuilderContext.response().assertionIgnore()
+                )
+                .operation()
+                .send();
+        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(),
+                "Slowly reading backend",
+                "Slowly reading backend response did not receive correctly");
     }
+
+
+
+//    public static String getFileBody(File filePath) throws IOException {
+//
+//        FileInputStream fileInputStream = null;
+//        try {
+//            fileInputStream = new FileInputStream(filePath);
+//            int c;
+//            StringBuilder stringBuilder = new StringBuilder();
+//            while ((c = fileInputStream.read()) != -1) {
+//                stringBuilder.append(c);
+//            }
+//            String content = stringBuilder.toString();
+//            content = content.replace("\n", "").replace("\r", "");
+//
+//            return content;
+//        } finally {
+//            if (fileInputStream != null) {
+//                fileInputStream.close();
+//            }
+//        }
+//    }
 
     @AfterClass
     public void StopAgent() throws IOException {
