@@ -57,7 +57,7 @@ public class ClientTests {
         postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distri" +
                 "bution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
         postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-T" +
-                "est-Framework-Bals/ClientTest.bal");
+                "est-Framework-Bals/CTest.bal");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
     }

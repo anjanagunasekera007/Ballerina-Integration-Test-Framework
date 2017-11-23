@@ -71,28 +71,28 @@ public class SingleServerTests {
                 "The received response body is not same as the expected");
     }
 
-    @Test
-    public void testReadingDelay() {
-        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
-                .client()
-                .given(
-                        HttpClientConfigBuilderContext.configure()
-                                .host("127.0.0.1")
-                                .port(Integer.parseInt("9090"))
-                )
-                .when(
-                        HttpClientRequestBuilderContext.request().withPath("/services/servers/readingdelay")
-                                .withMethod(HttpMethod.POST)
-                                .withBody("Slowly reading backend")
-                )
-                .then(
-                        HttpClientResponseBuilderContext.response().assertionIgnore()
-                )
-                .operation()
-                .send();
-        Assert.assertEquals("Slowly reading backend", response.getReceivedResponseContext().getResponseBody(),
-                "The received response body is not same as the expected");
-    }
+//    @Test
+//    public void testReadingDelay() {
+//        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+//                .client()
+//                .given(
+//                        HttpClientConfigBuilderContext.configure()
+//                                .host("127.0.0.1")
+//                                .port(Integer.parseInt("9090"))
+//                )
+//                .when(
+//                        HttpClientRequestBuilderContext.request().withPath("/services/servers/readingdelay")
+//                                .withMethod(HttpMethod.POST)
+//                                .withBody("Slowly reading backend")
+//                )
+//                .then(
+//                        HttpClientResponseBuilderContext.response().assertionIgnore()
+//                )
+//                .operation()
+//                .send();
+//        Assert.assertEquals("Slowly reading backend", response.getReceivedResponseContext().getResponseBody(),
+//                "The received response body is not same as the expected");
+//    }
 
     @Test
     public void testSlowResponse() {
