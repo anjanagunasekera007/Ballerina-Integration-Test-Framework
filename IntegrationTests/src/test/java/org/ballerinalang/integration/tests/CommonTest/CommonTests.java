@@ -138,6 +138,40 @@ public class CommonTests {
                 "The received response body is not same as the expected");
     }
 
+    @Test
+    public void testClientSlowWritingLargePayload() throws IOException {
+        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+                .client()
+                .given(
+                        HttpClientConfigBuilderContext.configure()
+                                .host("127.0.0.1")
+                                .port(Integer.parseInt("9090")).withWritingDelay(3000)
+                )
+                .when(
+                        HttpClientRequestBuilderContext.request().withPath("/services/common/normalserver")
+                                .withMethod(HttpMethod.POST).withBody(largeFile)
+                )
+                .then(
+                        HttpClientResponseBuilderContext.response().assertionIgnore()
+                )
+                .operation()
+                .send();
+        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(),
+                "{\"glossary\":{\"title\":\"exampleglossary\",\"GlossDiv\":{\"title\":\"S\"," +
+                        "\"GlossList\":{\"GlossEntry\":{\"ID\":\"SGML\",\"SortAs\":\"SGML\"," +
+                        "\"GlossTerm\":\"StandardGeneralizedMarkupLanguage\",\"Acronym\":\"SGML\"," +
+                        "\"Abbrev\":\"ISO8879:1986\",\"GlossDef\":{\"para\":\"Ameta-markuplanguage," +
+                        "usedtocreatemarkuplanguagessuchasDocBook.\",\"GlossSeeAlso\":[\"GML\"," +
+                        "\"XML\"]},\"GlossSee\":\"markup\"}}}}}",
+                "The received response body is not same as the expected");
+//        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(),TestUtils.getFileBody(largeFile),
+//                "The received response body is not same as the expected");
+        Assert.assertEquals(response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE),
+                HttpHeaders.Values.APPLICATION_JSON,
+                "The received ContentType header is different from that expected");
+    }
+
+
 
     @AfterClass
     public void stopAgent() throws IOException {
