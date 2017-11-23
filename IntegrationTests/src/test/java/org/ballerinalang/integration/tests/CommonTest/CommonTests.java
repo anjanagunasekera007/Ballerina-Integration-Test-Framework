@@ -164,8 +164,6 @@ public class CommonTests {
                         "usedtocreatemarkuplanguagessuchasDocBook.\",\"GlossSeeAlso\":[\"GML\"," +
                         "\"XML\"]},\"GlossSee\":\"markup\"}}}}}",
                 "The received response body is not same as the expected");
-//        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(),TestUtils.getFileBody(largeFile),
-//                "The received response body is not same as the expected");
         Assert.assertEquals(response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE),
                 HttpHeaders.Values.APPLICATION_JSON,
                 "The received ContentType header is different from that expected");
