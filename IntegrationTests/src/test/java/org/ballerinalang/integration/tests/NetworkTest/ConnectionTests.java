@@ -30,7 +30,7 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 
 import java.io.*;
 
-public class ConnectionDrop {
+public class ConnectionTests {
 
     private String pathServerDisconnect = "/services/normal_server/servicedisconnect";
 
@@ -44,7 +44,7 @@ public class ConnectionDrop {
         postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribu" +
                 "tion/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
         postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Te" +
-                "st-Framework-Bals/Test.bal");
+                "st-Framework-Bals/ConnectionTest.bal");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
     }

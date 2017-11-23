@@ -15,6 +15,7 @@
 */
 package org.ballerinalang.integration.tests.CommonTest;
 
+import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -34,6 +35,7 @@ import java.io.IOException;
 
 public class CommonTests {
     private File largeFile = new File("src/test/resources/files/1MB.txt");
+    private File plainFile = new File("src/test/resources/files/100KB.txt");
 
     @BeforeClass
     public void initParameters() throws Exception {
@@ -113,6 +115,29 @@ public class CommonTests {
                 "Slowly reading backend",
                 "Slowly reading backend response did not receive correctly");
     }
+
+    @Test
+    public void testSlowWritingLargeResponseBackend() throws IOException {
+        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+                .client()
+                .given(
+                        HttpClientConfigBuilderContext.configure()
+                                .host("127.0.0.1")
+                                .port(Integer.parseInt("9090"))
+                )
+                .when(
+                        HttpClientRequestBuilderContext.request().withPath("/services/common/slowwritinglargeresponse")
+                                .withMethod(HttpMethod.POST).withBody(plainFile)
+                )
+                .then(
+                        HttpClientResponseBuilderContext.response().assertionIgnore()
+                )
+                .operation()
+                .send();
+        Assert.assertEquals(TestUtils.getFileBody(largeFile), response.getReceivedResponseContext().getResponseBody(),
+                "The received response body is not same as the expected");
+    }
+
 
     @AfterClass
     public void stopAgent() throws IOException {

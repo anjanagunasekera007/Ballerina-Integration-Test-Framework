@@ -19,6 +19,7 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.ballerinalang.integration.tests.TestUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -44,7 +45,7 @@ public class PayloadTest {
         postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/" +
                 "tools-distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
         postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/" +
-                "Ballerina-Integration-Test-Framework-Bals/Test.bal");
+                "Ballerina-Integration-Test-Framework-Bals/PayloadTest.bal");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
     }
@@ -52,8 +53,6 @@ public class PayloadTest {
 
     @Test
     public void testServerSendingLargePayload() throws IOException {
-
-        String s = readFile(largeFilePath);
 
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -72,7 +71,7 @@ public class PayloadTest {
                 )
                 .operation()
                 .send();
-        Assert.assertEquals(getFileBody(new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
+        Assert.assertEquals(TestUtils.getFileBody(new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
                         "IntegrationTests/src/test/resources/files/1MB.txt")),
                 response.getReceivedResponseContext().getResponseBody(),
                 "The received response body is not same as the expected");
@@ -140,48 +139,8 @@ public class PayloadTest {
                 "Status code should be 500 for malformed payload");
     }
 
-
-    public String readFile(String filePath) {
-        String line = null;
-        String st = "";
-        try {
-            FileReader fileReader = new FileReader(filePath);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            while ((line = bufferedReader.readLine()) != null) {
-                st = st + line;
-            }
-            bufferedReader.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println("Unable to open file '" + filePath + "'");
-        } catch (IOException ex) {
-            System.out.println("Error reading file '" + filePath + "'");
-        }
-        return st;
-    }
-
-    public static String getFileBody(File filePath) throws IOException {
-
-        FileInputStream fileInputStream = null;
-        try {
-            fileInputStream = new FileInputStream(filePath);
-            int c;
-            StringBuilder stringBuilder = new StringBuilder();
-            while ((c = fileInputStream.read()) != -1) {
-                stringBuilder.append(c);
-            }
-            String content = stringBuilder.toString();
-            content = content.replace("\n", "").replace("\r", "");
-
-            return content;
-        } finally {
-            if (fileInputStream != null) {
-                fileInputStream.close();
-            }
-        }
-    }
-
     @AfterClass
-    public void StopAgent() throws IOException {
+    public void stopAgent() throws IOException {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);

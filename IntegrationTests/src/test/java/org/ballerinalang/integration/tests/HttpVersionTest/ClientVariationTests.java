@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.ballerinalang.integration.tests;
+package org.ballerinalang.integration.tests.HttpVersionTest;
 
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
