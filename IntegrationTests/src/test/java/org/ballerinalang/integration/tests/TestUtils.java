@@ -20,9 +20,11 @@ import org.testng.Assert;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Properties;
 
 public class TestUtils {
     public static String getCurrentDir() {
@@ -83,5 +85,19 @@ public class TestUtils {
                 fileInputStream.close();
             }
         }
+    }
+
+    /**
+     * Get file content as string
+     *
+
+     * @return string Properties
+     * @throws IOException if issue accessing the file
+     */
+    private Properties getDefaultLogConfiguration() throws IOException {
+        Properties properties = new Properties();
+        InputStream in = getClass().getClassLoader().getResourceAsStream("/home/anjana/work/Ballerina-Integration-Test-Framework/IntegrationTests/path.properties");
+        properties.load(in);
+        return properties;
     }
 }

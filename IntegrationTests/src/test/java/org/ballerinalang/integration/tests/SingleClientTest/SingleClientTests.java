@@ -19,6 +19,7 @@ import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.ballerinalang.integration.tests.TestUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -40,6 +41,7 @@ public class SingleClientTests {
     private String echoBackServerPath = "/services/client/normal";
     private File largeFile = new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
             "IntegrationTests/src/test/resources/files/1MB.txt");
+    private String largePayloadProcess ="/services/client/process";
 
     private File plainFile = new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
             "IntegrationTests/src/test/resources/files/100KB.txt");
@@ -246,6 +248,29 @@ public class SingleClientTests {
                     HttpHeaders.Values.APPLICATION_JSON,
                     "The received ContentType header value is different from that expected");
         }
+    }
+
+    @Test
+    public void testDisconnectPartially() {
+        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+                .client()
+                .given(
+                        HttpClientConfigBuilderContext.configure()
+                                .host("127.0.0.1")
+                                .port(Integer.parseInt("9090"))
+                                .withPartialWriteConnectionDrop()
+                )
+                .when(
+                        HttpClientRequestBuilderContext.request().withPath(echoBackServerPath)
+                                .withMethod(HttpMethod.POST).withBody(plainFile)
+                )
+                .then(
+                        HttpClientResponseBuilderContext.response().assertionIgnore()
+                )
+                .operation()
+                .send();
+
+        Assert.assertNull(response, "The response received is not null");
     }
 
 
