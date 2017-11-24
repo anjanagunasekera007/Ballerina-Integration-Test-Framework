@@ -1,5 +1,5 @@
 /*
-* Copyright (c) $today.year, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+* Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -36,6 +36,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * This class contains normalback end services tests with varying clients
+ */
 public class SingleClientTests {
 
     private String echoBackServerPath = "/services/client/normal";

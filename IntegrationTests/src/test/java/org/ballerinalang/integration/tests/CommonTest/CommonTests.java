@@ -1,5 +1,5 @@
 /*
-* Copyright (c) $today.year, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+* Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 */
 package org.ballerinalang.integration.tests.CommonTest;
 
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -33,6 +32,9 @@ import org.ballerinalang.integration.tests.TestUtils;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * This class contains Common test cases and mixed scenario test cases for Client
+ */
 public class CommonTests {
     private File largeFile = new File("src/test/resources/files/1MB.txt");
     private File plainFile = new File("src/test/resources/files/100KB.txt");

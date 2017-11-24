@@ -40,7 +40,7 @@
                 <class name="org.ballerinalang.integration.tests.SingleClientTest.SingleClientTests"/>
                 <class name="org.ballerinalang.integration.tests.SingleServerTest.SingleServerTests"/>
                 <class name="org.ballerinalang.integration.tests.CommonTest.CommonTests"/>
-                <class name="org.ballerinalang.integration.tests.ConcurrentTest.ConcurrentTests"/>
+                <!--<class name="org.ballerinalang.integration.tests.ConcurrentTest.ConcurrentTests"/>-->
             </classes>
         </test>
 

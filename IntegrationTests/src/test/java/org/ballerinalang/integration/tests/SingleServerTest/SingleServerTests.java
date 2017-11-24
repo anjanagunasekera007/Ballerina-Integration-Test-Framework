@@ -1,5 +1,5 @@
 /*
-* Copyright (c) $today.year, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+* Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -31,6 +31,9 @@ import org.ballerinalang.integration.tests.TestUtils;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * This class contains test cases for single client and varying servers
+ */
 public class SingleServerTests {
 
     private File plainFile = new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
@@ -70,29 +73,6 @@ public class SingleServerTests {
                 response.getReceivedResponseContext().getResponseBody(),
                 "The received response body is not same as the expected");
     }
-
-//    @Test
-//    public void testReadingDelay() {
-//        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
-//                .client()
-//                .given(
-//                        HttpClientConfigBuilderContext.configure()
-//                                .host("127.0.0.1")
-//                                .port(Integer.parseInt("9090"))
-//                )
-//                .when(
-//                        HttpClientRequestBuilderContext.request().withPath("/services/servers/readingdelay")
-//                                .withMethod(HttpMethod.POST)
-//                                .withBody("Slowly reading backend")
-//                )
-//                .then(
-//                        HttpClientResponseBuilderContext.response().assertionIgnore()
-//                )
-//                .operation()
-//                .send();
-//        Assert.assertEquals("Slowly reading backend", response.getReceivedResponseContext().getResponseBody(),
-//                "The received response body is not same as the expected");
-//    }
 
     @Test
     public void testSlowResponse() {

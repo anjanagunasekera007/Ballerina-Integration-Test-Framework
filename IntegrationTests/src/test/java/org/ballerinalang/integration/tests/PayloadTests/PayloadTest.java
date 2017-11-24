@@ -1,5 +1,5 @@
 /*
-* Copyright (c) $today.year, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+* Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -31,6 +31,9 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
 import java.io.*;
 
+/**
+ * This class contains Test cases for payload testing malformed and processing.
+ */
 public class PayloadTest {
     private String pathLargePayload = "/services/normal_server/largepayload";
     private String pathMalformedPayload = "/services/normal_server/malformedpayload";
