@@ -29,7 +29,9 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBu
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
-import java.io.*;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * This class contains Test cases for payload testing malformed and processing.
@@ -38,9 +40,6 @@ public class PayloadTest {
     private String pathLargePayload = "/services/normal_server/largepayload";
     private String pathMalformedPayload = "/services/normal_server/malformedpayload";
     private String pathMalformedPayloadProcess = "/services/normal_server/malformedpayloadprocess";
-
-    private String largeFilePath = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/" +
-            "EmulatorServer/1MB.txt";
 
         @BeforeClass
     public void initParameters() throws Exception {

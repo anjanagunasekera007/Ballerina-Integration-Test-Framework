@@ -65,8 +65,10 @@ public class TestExecutionListener implements ITestListener {
     }
 
     @Override
-    public void onStart(ITestContext context) { }
+    public void onStart(ITestContext context) {
+    }
 
     @Override
-    public void onFinish(ITestContext context) { }
+    public void onFinish(ITestContext context) {
+    }
 }

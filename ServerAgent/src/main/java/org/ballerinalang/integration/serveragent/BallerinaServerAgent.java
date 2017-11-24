@@ -64,13 +64,11 @@ public class BallerinaServerAgent {
     @Path("/stop")
     public synchronized void stopService() {
         killProcess("9090");
-
     }
 
     @POST
     @Path("/stopagent")
     public synchronized void stopAgent() throws Exception {
-
         killProcess("9090");
         killProcess("9001");
     }

@@ -28,7 +28,8 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestB
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
 
-import java.io.*;
+import java.io.IOException;
+
 /**
  * This class contains Test cases for connection drop tests.
  */

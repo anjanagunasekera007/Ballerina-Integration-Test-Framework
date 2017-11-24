@@ -33,6 +33,7 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
 
 import java.io.IOException;
+
 /**
  * This class contains various http protocols from client to server and from server to cleint
  */
@@ -140,4 +141,4 @@ public class ClientVariationTests {
         httpClient.executeMethod(postMethod);
     }
 
- }
+}

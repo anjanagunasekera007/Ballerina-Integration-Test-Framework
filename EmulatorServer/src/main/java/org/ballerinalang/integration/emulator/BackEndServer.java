@@ -1,3 +1,19 @@
+/*
+* Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
 package org.ballerinalang.integration.emulator;
 
 import io.netty.handler.codec.http.HttpHeaders;
@@ -7,15 +23,20 @@ import io.netty.handler.codec.http.HttpVersion;
 import org.wso2.carbon.protocol.emulator.dsl.Emulator;
 import org.wso2.carbon.protocol.emulator.http.server.contexts.HttpServerOperationBuilderContext;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import static org.wso2.carbon.protocol.emulator.http.server.contexts.HttpServerConfigBuilderContext.configure;
 import static org.wso2.carbon.protocol.emulator.http.server.contexts.HttpServerRequestBuilderContext.request;
 import static org.wso2.carbon.protocol.emulator.http.server.contexts.HttpServerResponseBuilderContext.response;
 
 public class BackEndServer {
-    
+
     private static String hostIp = "127.0.0.1";
+
     public static void main(String[] args) throws IOException {
         if (args.length > 0) {
             hostIp = args[0];
@@ -37,8 +58,6 @@ public class BackEndServer {
         startHttpInvalidSpec();
         startHttpEmulatorSlowWritingLargePayload();
         startHttpEmulatorNormal();
-
-//        startHttpEmulatorConstantLargePayload();
     }
 
     private static HttpServerOperationBuilderContext startHttpEmulatorNormal() throws IOException {
@@ -48,7 +67,7 @@ public class BackEndServer {
         return Emulator.getHttpEmulator().server()
 
                 .given(
-                        configure().host(hostIp).port(6064).context("/normal").withEnableWireLog( )
+                        configure().host(hostIp).port(6064).context("/normal").withEnableWireLog()
 
                 )
 
@@ -69,7 +88,7 @@ public class BackEndServer {
         return Emulator.getHttpEmulator().server()
 
                 .given(
-                        configure().host(hostIp).port(6066).context("/large").withEnableWireLog( )
+                        configure().host(hostIp).port(6066).context("/large").withEnableWireLog()
 
                 )
 
@@ -231,7 +250,7 @@ public class BackEndServer {
                 .then(
                         response().withBody("@{body}").withStatusCode(HttpResponseStatus.OK)
                                 .withHeader("Content-Type", "application/xml").
-                                 withHeader("wso2", "123")
+                                withHeader("wso2", "123")
                 )
                 .operation()
                 .start();
@@ -363,44 +382,29 @@ public class BackEndServer {
                 .operation().start();
     }
 
-//    //startHttpEmulatorConstantLargePayload
-//    private static HttpServerOperationBuilderContext startHttpEmulatorConstantLargePayload() {
-//        return Emulator.getHttpEmulator().server()
-//                .given(
-//                        configure().host(hostIp).port(6081).context("/constant").withEnableWireLog()
-//                                .withWritingDelay(3000)
-//                )
-//
-//                .when(
-//                        request().withMethod(HttpMethod.POST).withPath("/payload")
-//                )
-//                .then(
-//                        response().withStatusCode(HttpResponseStatus.OK).withBody(new File("1MB.txt"))
-//                )
-//                .operation().start();
-//    }
 
-    //Method for reading files Param : Path
-    public static String readFile()
-    {
+    /**
+     * Read file and return body.
+     *
+     * @return file String
+     */
+    public static String readFile() {
         String fileName = "/home/anjana/work/Test-framework/wso2-synapse-engine-test-framework/EmulatorServer/1MB.txt";
-        String line = null;
-        String st = "";
+        String line;
+        StringBuilder st = new StringBuilder();
         try {
             FileReader fileReader = new FileReader(fileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            while((line = bufferedReader.readLine()) != null) {
-                st=st+line;
+            while ((line = bufferedReader.readLine()) != null) {
+                st.append(line);
             }
-           bufferedReader.close();
-        }
-        catch(FileNotFoundException ex) {
+            bufferedReader.close();
+        } catch (FileNotFoundException ex) {
             System.out.println("Unable to open file '" + fileName + "'");
-        }
-        catch(IOException ex) {
+        } catch (IOException ex) {
             System.out.println("Error reading file '" + fileName + "'");
         }
-        return st;
+        return st.toString();
     }
 
 
