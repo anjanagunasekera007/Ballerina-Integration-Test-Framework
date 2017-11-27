@@ -37,23 +37,23 @@ import java.io.IOException;
  * This class contains Test cases for payload testing malformed and processing.
  */
 public class PayloadTest {
-    private String pathLargePayload = "/services/normal_server/largepayload";
-    private String pathMalformedPayload = "/services/normal_server/malformedpayload";
-    private String pathMalformedPayloadProcess = "/services/normal_server/malformedpayloadprocess";
+    private String pathLargePayload = "/services/servers/largepayload";
+    private String pathMalformedPayload = "/services/servers/malformedpayload";
+    private String pathMalformedPayloadProcess = "/services/servers/malformedpayloadprocess";
 
-        @BeforeClass
-    public void initParameters() throws Exception {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
-        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/" +
-                "tools-distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
-        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/" +
-                "Ballerina-Integration-Test-Framework-Bals/PayloadTest.bal");
-        HttpClient httpClient = new HttpClient();
-        httpClient.executeMethod(postMethod);
-    }
+//        @BeforeClass
+//    public void initParameters() throws Exception {
+//        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
+//        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/" +
+//                "tools-distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
+//        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/" +
+//                "Ballerina-Integration-Test-Framework-Bals/PayloadTest.bal");
+//        HttpClient httpClient = new HttpClient();
+//        httpClient.executeMethod(postMethod);
+//    }
 
 
-    @Test
+    @Test(invocationCount = 10)
     public void testServerSendingLargePayload() throws IOException {
 
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
@@ -80,7 +80,7 @@ public class PayloadTest {
 
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testMalformedPayload() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -113,7 +113,7 @@ public class PayloadTest {
                 "</note>");
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testMalformedPayloadProcess() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -141,10 +141,10 @@ public class PayloadTest {
                 "Status code should be 500 for malformed payload");
     }
 
-    @AfterClass
-    public void stopAgent() throws IOException {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
-        HttpClient httpClient = new HttpClient();
-        httpClient.executeMethod(postMethod);
-    }
+//    @AfterClass
+//    public void stopAgent() throws IOException {
+//        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
+//        HttpClient httpClient = new HttpClient();
+//        httpClient.executeMethod(postMethod);
+//    }
 }

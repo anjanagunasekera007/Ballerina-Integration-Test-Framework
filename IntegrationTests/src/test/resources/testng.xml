@@ -26,20 +26,21 @@
 
     <!--<parameter name="useDefaultListeners" value="false"/>-->
 
-    <test name="ballerina-integration-tests" verbose="2">
-        <packages>
-            <package name="org.ballerinalang.integration.tests"/>
-        </packages>
-    </test>
+    <!--<test name="ballerina-integration-tests" verbose="2">-->
+        <!--<packages>-->
+            <!--<package name="org.ballerinalang.integration.tests"/>-->
+        <!--</packages>-->
+    <!--</test>-->
 
 
     <test name="class-tests" verbose="2">
         <classes>
-                <class name="org.ballerinalang.integration.tests.PayloadTests.PayloadTest"/>
-                <class name="org.ballerinalang.integration.tests.NetworkTest.ConnectionTests"/>
-                <class name="org.ballerinalang.integration.tests.SingleClientTest.SingleClientTests"/>
-                <class name="org.ballerinalang.integration.tests.SingleServerTest.SingleServerTests"/>
-                <class name="org.ballerinalang.integration.tests.CommonTest.CommonTests"/>
+                <!--<class name="org.ballerinalang.integration.tests.PayloadTests.PayloadTest"/>-->
+                <class name="org.ballerinalang.integration.tests.CombinedTest.AllTestCases"/>
+                <!--<class name="org.ballerinalang.integration.tests.NetworkTest.ConnectionTests"/>-->
+                <!--<class name="org.ballerinalang.integration.tests.SingleClientTest.SingleClientTests"/>-->
+                <!--<class name="org.ballerinalang.integration.tests.SingleServerTest.SingleServerTests"/>-->
+                <!--<class name="org.ballerinalang.integration.tests.CommonTest.CommonTests"/>-->
             </classes>
         </test>
 

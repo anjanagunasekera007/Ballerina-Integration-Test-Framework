@@ -69,4 +69,12 @@ public class TestUtils {
         properties.load(in);
         return properties;
     }
+
+    /**
+     * Get an cml body as string
+     * @return String xml body
+     */
+    private String getXmlBody() {
+        return "<request>Http10ClientTest</request>";
+    }
 }

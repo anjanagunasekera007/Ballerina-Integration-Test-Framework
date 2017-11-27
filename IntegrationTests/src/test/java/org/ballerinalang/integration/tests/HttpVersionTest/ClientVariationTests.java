@@ -39,21 +39,21 @@ import java.io.IOException;
  */
 public class ClientVariationTests {
 
-    @BeforeClass
-    public void initParameters() throws Exception {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
-        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-" +
-                "distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
-        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-" +
-                "Test-Framework-Bals/Test.bal");
-        HttpClient httpClient = new HttpClient();
-        httpClient.executeMethod(postMethod);
-    }
+//    @BeforeClass
+//    public void initParameters() throws Exception {
+//        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
+//        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-" +
+//                "distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
+//        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-" +
+//                "Test-Framework-Bals/Test.bal");
+//        HttpClient httpClient = new HttpClient();
+//        httpClient.executeMethod(postMethod);
+//    }
 
     /**
      * The client will use HTTP 1.0 while backend use HTTP 1.1 to communicate with Ballerina server.
      */
-    @Test
+    @Test(invocationCount = 10)
     public void testHttp10ToHttp11() {
         HttpClientConfigBuilderContext clientConfig = HttpClientConfigBuilderContext
                 .configure()
@@ -63,7 +63,7 @@ public class ClientVariationTests {
 
         HttpClientRequestBuilderContext requestConfig = HttpClientRequestBuilderContext
                 .request()
-                .withPath("/services/normal_server/normal")
+                .withPath("/services/servers/normal")
                 .withMethod(HttpMethod.POST)
                 .withHttpVersion(HttpVersion.HTTP_1_0)
                 .withXmlPayload(getXmlBody());
@@ -80,7 +80,7 @@ public class ClientVariationTests {
     /**
      * The client and backend will use HTTP 1.0 to communicate with Ballerina server.
      */
-    @Test
+    @Test(invocationCount = 10)
     public void testHttp10ToHttp10() {
         HttpClientConfigBuilderContext clientConfig = HttpClientConfigBuilderContext
                 .configure()
@@ -90,7 +90,7 @@ public class ClientVariationTests {
 
         HttpClientRequestBuilderContext requestConfig = HttpClientRequestBuilderContext
                 .request()
-                .withPath("/services/normal_server/http10_only")
+                .withPath("/services/servers/http10_only")
                 .withMethod(HttpMethod.POST)
                 .withHttpVersion(HttpVersion.HTTP_1_0)
                 .withXmlPayload(getXmlBody());
@@ -106,7 +106,7 @@ public class ClientVariationTests {
     /**
      * The client will use HTTP 1.1 while the backend use HTTP 1.0 to communicate with Ballerina server.
      */
-    @Test
+    @Test(invocationCount = 10)
     public void testHttp11ToHttp10() {
         HttpClientConfigBuilderContext clientConfig = HttpClientConfigBuilderContext
                 .configure()
@@ -116,7 +116,7 @@ public class ClientVariationTests {
 
         HttpClientRequestBuilderContext requestConfig = HttpClientRequestBuilderContext
                 .request()
-                .withPath("/services/normal_server/http10_only")
+                .withPath("/services/servers/http10_only")
                 .withMethod(HttpMethod.POST)
                 .withXmlPayload(getXmlBody());
 
@@ -134,11 +134,11 @@ public class ClientVariationTests {
         return "<request>Http10ClientTest</request>";
     }
 
-    @AfterClass
-    public void stopAgent() throws IOException {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
-        HttpClient httpClient = new HttpClient();
-        httpClient.executeMethod(postMethod);
-    }
+//    @AfterClass
+//    public void stopAgent() throws IOException {
+//        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
+//        HttpClient httpClient = new HttpClient();
+//        httpClient.executeMethod(postMethod);
+//    }
 
 }

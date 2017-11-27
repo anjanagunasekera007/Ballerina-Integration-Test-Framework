@@ -35,24 +35,24 @@ import java.io.IOException;
  */
 public class ConnectionTests {
 
-    private String pathServerDisconnect = "/services/normal_server/servicedisconnect";
+    private String pathServerDisconnect = "/services/servers/servicedisconnect";
 
     private String xmlBodySmall = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<note>\n" +
             "</note>";
 
-    @BeforeClass
-    public void initParameters() throws Exception {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
-        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribu" +
-                "tion/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
-        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Te" +
-                "st-Framework-Bals/ConnectionTest.bal");
-        HttpClient httpClient = new HttpClient();
-        httpClient.executeMethod(postMethod);
-    }
+//    @BeforeClass
+//    public void initParameters() throws Exception {
+//        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
+//        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribu" +
+//                "tion/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
+//        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Te" +
+//                "st-Framework-Bals/ConnectionTest.bal");
+//        HttpClient httpClient = new HttpClient();
+//        httpClient.executeMethod(postMethod);
+//    }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testServerDisconnectPartially() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -75,10 +75,10 @@ public class ConnectionTests {
         Assert.assertNull(response);
     }
 
-    @AfterClass
-    public void stopAgent() throws IOException {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
-        HttpClient httpClient = new HttpClient();
-        httpClient.executeMethod(postMethod);
-    }
+//    @AfterClass
+//    public void stopAgent() throws IOException {
+//        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
+//        HttpClient httpClient = new HttpClient();
+//        httpClient.executeMethod(postMethod);
+//    }
 }

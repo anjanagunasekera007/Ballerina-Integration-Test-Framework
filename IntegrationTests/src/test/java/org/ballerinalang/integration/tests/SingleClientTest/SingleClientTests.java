@@ -40,7 +40,7 @@ import java.util.List;
  */
 public class SingleClientTests {
 
-    private String echoBackServerPath = "/services/client/normal";
+    private String echoBackServerPath = "/services/servers/singleclient";
     private File largeFile = new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
             "IntegrationTests/src/test/resources/files/1MB.txt");
     private String largePayloadProcess ="/services/client/process";
@@ -55,19 +55,19 @@ public class SingleClientTests {
             "usedtocreatemarkuplanguagessuchasDocBook.\",\"GlossSeeAlso\":[\"GML\"," +
             "\"XML\"]},\"GlossSee\":\"markup\"}}}}}";
 
-    @BeforeClass
-    public void initParameters() throws Exception {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
-        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/" +
-                "tools-distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
-        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/" +
-                "Ballerina-Integration-Test-Framework-Bals/SingleClientTest.bal");
-        HttpClient httpClient = new HttpClient();
-        httpClient.executeMethod(postMethod);
-    }
+//    @BeforeClass
+//    public void initParameters() throws Exception {
+//        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
+//        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/" +
+//                "tools-distribution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
+//        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/" +
+//                "Ballerina-Integration-Test-Framework-Bals/SingleClientTest.bal");
+//        HttpClient httpClient = new HttpClient();
+//        httpClient.executeMethod(postMethod);
+//    }
 
 
-    @Test
+    @Test(invocationCount = 10)
     public void testClientLargePayload() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -92,7 +92,7 @@ public class SingleClientTests {
                 "The received ContentType header value is different from that expected");
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testClientProcessingLargePayload() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -118,7 +118,7 @@ public class SingleClientTests {
                 "The received ContentType header value is different from that expected");
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testClientSlowWriting() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -143,7 +143,7 @@ public class SingleClientTests {
                 "The received ContentType header value is different from that expected");
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testClientSlowReading() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -168,7 +168,7 @@ public class SingleClientTests {
                 "The received ContentType header value is different from that expected");
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testClientDisableKeepAlive() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -197,7 +197,7 @@ public class SingleClientTests {
 
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testDisableChunking() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -222,7 +222,7 @@ public class SingleClientTests {
                 "The received ContentType header value is different from that expected");
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testBurstRequests() {
         for (int i = 0; i < 10; i++) {
             HttpClientOperationBuilderContext httpClientOperationBuilderContext = Emulator.getHttpEmulator()
@@ -252,7 +252,7 @@ public class SingleClientTests {
         }
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testDisconnectPartially() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -276,11 +276,11 @@ public class SingleClientTests {
     }
 
 
-    @AfterClass
-    public void stopAgent() throws IOException {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
-        HttpClient httpClient = new HttpClient();
-        httpClient.executeMethod(postMethod);
-    }
+//    @AfterClass
+//    public void stopAgent() throws IOException {
+//        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
+//        HttpClient httpClient = new HttpClient();
+//        httpClient.executeMethod(postMethod);
+//    }
 
 }

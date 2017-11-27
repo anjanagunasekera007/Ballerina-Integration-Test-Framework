@@ -37,9 +37,9 @@ import java.io.IOException;
  * This class contains normal test cases for Client
  */
 public class ClientTests {
-    private String path = "/services/normal_server/normal";
-    private String pathSlowReading = "/services/normal_server/slowreading";
-    private String pathSlowWriting = "/services/normal_server/slowriting";
+    private String path = "/services/servers/normal";
+    private String pathSlowReading = "/services/servers/slowreading";
+    private String pathSlowWriting = "/services/servers/slowriting";
 
     private String responseBody = "{\"glossary\":{\"title\":\"exampleglossary\",\"GlossDiv\":{\"title\":\"S\"," +
             "\"GlossList\":{\"GlossEntry\":{\"ID\":\"SGML\",\"SortAs\":\"SGML\"," +
@@ -58,13 +58,13 @@ public class ClientTests {
         postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distri" +
                 "bution/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
         postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-T" +
-                "est-Framework-Bals/CTest.bal");
+                "est-Framework-Bals/AllinoneTests.bal");
         HttpClient httpClient = new HttpClient();
         httpClient.executeMethod(postMethod);
     }
 
 
-    @Test
+    @Test(invocationCount = 10)
     public void testNormalServer() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -87,7 +87,7 @@ public class ClientTests {
 
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testServerSlowReading() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -109,7 +109,7 @@ public class ClientTests {
 
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testServerSlowWriting() {
 
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
@@ -132,10 +132,10 @@ public class ClientTests {
 
     }
 
-    @AfterClass
-    public void stopAgent() throws IOException {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
-        HttpClient httpClient = new HttpClient();
-        httpClient.executeMethod(postMethod);
-    }
+//    @AfterClass
+//    public void stopAgent() throws IOException {
+//        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
+//        HttpClient httpClient = new HttpClient();
+//        httpClient.executeMethod(postMethod);
+//    }
 }

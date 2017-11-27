@@ -40,18 +40,18 @@ public class SingleServerTests {
     private File plainFile = new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
             "IntegrationTests/src/test/resources/files/100KB.txt");
 
-    @BeforeClass
-    public void initParameters() throws Exception {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
-        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribu" +
-                "tion/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
-        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Te" +
-                "st-Framework-Bals/MultipleServersTest.bal");
-        HttpClient httpClient = new HttpClient();
-        httpClient.executeMethod(postMethod);
-    }
+//    @BeforeClass
+//    public void initParameters() throws Exception {
+//        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
+//        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribu" +
+//                "tion/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
+//        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Te" +
+//                "st-Framework-Bals/MultipleServersTest.bal");
+//        HttpClient httpClient = new HttpClient();
+//        httpClient.executeMethod(postMethod);
+//    }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testLargePayload() throws IOException {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -75,7 +75,7 @@ public class SingleServerTests {
                 "The received response body is not same as the expected");
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testSlowResponse() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -97,7 +97,7 @@ public class SingleServerTests {
                 "The received response body is not same as the expected");
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testWritingDelay() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -119,7 +119,7 @@ public class SingleServerTests {
                 "The received response body is not same as the expected");
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testKeepAlive() {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -141,10 +141,10 @@ public class SingleServerTests {
                 "The received response body is not same as the expected");
     }
 
-    @AfterClass
-    public void stopAgent() throws IOException {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
-        HttpClient httpClient = new HttpClient();
-        httpClient.executeMethod(postMethod);
-    }
+//    @AfterClass
+//    public void stopAgent() throws IOException {
+//        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
+//        HttpClient httpClient = new HttpClient();
+//        httpClient.executeMethod(postMethod);
+//    }
 }

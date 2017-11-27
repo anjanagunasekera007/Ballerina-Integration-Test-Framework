@@ -39,18 +39,18 @@ public class CommonTests {
     private File largeFile = new File("src/test/resources/files/1MB.txt");
     private File plainFile = new File("src/test/resources/files/100KB.txt");
 
-    @BeforeClass
-    public void initParameters() throws Exception {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
-        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribu" +
-                "tion/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
-        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Te" +
-                "st-Framework-Bals/CommonTest.bal");
-        HttpClient httpClient = new HttpClient();
-        httpClient.executeMethod(postMethod);
-    }
+//    @BeforeClass
+//    public void initParameters() throws Exception {
+//        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
+//        postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/tools-distribu" +
+//                "tion/modules/ballerina/target/ballerina-0.95.1-SNAPSHOT/");
+//        postMethod.addParameter("ballerinaFilePath", "/home/anjana/work/Ballerina-Integration-Te" +
+//                "st-Framework-Bals/CommonTest.bal");
+//        HttpClient httpClient = new HttpClient();
+//        httpClient.executeMethod(postMethod);
+//    }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testLargePayloadClientServer() throws IOException {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -60,7 +60,7 @@ public class CommonTests {
                                 .port(Integer.parseInt("9090"))
                 )
                 .when(
-                        HttpClientRequestBuilderContext.request().withPath("/services/common/largepayload")
+                        HttpClientRequestBuilderContext.request().withPath("/services/servers/largepayload")
                                 .withMethod(HttpMethod.POST).withBody(largeFile)
                 )
                 .then(
@@ -72,7 +72,7 @@ public class CommonTests {
                 "The received response body is not same as the expected");
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testBackendLargeSlowClient() throws IOException {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -82,7 +82,7 @@ public class CommonTests {
                                 .port(Integer.parseInt("9090")).withReadingDelay(3000)
                 )
                 .when(
-                        HttpClientRequestBuilderContext.request().withPath("/services/common/slowclient")
+                        HttpClientRequestBuilderContext.request().withPath("/services/servers/slowclient")
                                 .withMethod(HttpMethod.POST).withBody(largeFile)
                 )
                 .then(
@@ -94,7 +94,7 @@ public class CommonTests {
                 "The received response body is not same as the expected");
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testLargeFileClientSlowReadingBackend() throws Exception {
         String payload = TestUtils.getContentAsString("src/test/resources/files/1MB.txt");
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
@@ -105,7 +105,7 @@ public class CommonTests {
                                 .port(Integer.parseInt("9090"))
                 )
                 .when(
-                        HttpClientRequestBuilderContext.request().withPath("/services/common/readingdelay")
+                        HttpClientRequestBuilderContext.request().withPath("/services/servers/readingdelay")
                                 .withMethod(HttpMethod.POST).withBody("Slowly reading backend")
                 )
                 .then(
@@ -118,7 +118,7 @@ public class CommonTests {
                 "Slowly reading backend response did not receive correctly");
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testSlowWritingLargeResponseBackend() throws IOException {
         HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
                 .client()
@@ -128,7 +128,7 @@ public class CommonTests {
                                 .port(Integer.parseInt("9090"))
                 )
                 .when(
-                        HttpClientRequestBuilderContext.request().withPath("/services/common/slowwritinglargeresponse")
+                        HttpClientRequestBuilderContext.request().withPath("/services/servers/slowwritinglargeresponse")
                                 .withMethod(HttpMethod.POST).withBody(plainFile)
                 )
                 .then(
@@ -141,10 +141,10 @@ public class CommonTests {
     }
 
 
-    @AfterClass
-    public void stopAgent() throws IOException {
-        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
-        HttpClient httpClient = new HttpClient();
-        httpClient.executeMethod(postMethod);
-    }
+//    @AfterClass
+//    public void stopAgent() throws IOException {
+//        PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/stop");
+//        HttpClient httpClient = new HttpClient();
+//        httpClient.executeMethod(postMethod);
+//    }
 }
