@@ -16,6 +16,7 @@ package org.ballerinalang.integration.tests.Clients;/*
 
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
+import org.ballerinalang.integration.tests.ClientRunner.WaitUtil;
 import org.testng.Assert;
 import org.wso2.carbon.protocol.emulator.dsl.Emulator;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBuilderContext;
@@ -27,7 +28,11 @@ import java.io.File;
 
 public class ClientLargePayload implements Runnable{
 
-    private String echoBackServerPath = "/services/client/normal";
+    private WaitUtil waitUtil;
+
+    private HttpClientResponseProcessorContext response;
+
+    private String echoBackServerPath = "/services/servers/normal";
     private File largeFile = new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
             "IntegrationTests/src/test/resources/files/1MB.txt");
 
@@ -38,10 +43,19 @@ public class ClientLargePayload implements Runnable{
             "usedtocreatemarkuplanguagessuchasDocBook.\",\"GlossSeeAlso\":[\"GML\"," +
             "\"XML\"]},\"GlossSee\":\"markup\"}}}}}";
 
+    public ClientLargePayload(WaitUtil waitUtil) {
+        this.waitUtil = waitUtil;
+    }
+
+//    public ClientLargePayload() {
+//
+//    }
+
     @Override
     public void run() {
 
-        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+        System.exit(888);
+        response = Emulator.getHttpEmulator()
                 .client()
                 .given(
                         HttpClientConfigBuilderContext.configure()
@@ -57,11 +71,17 @@ public class ClientLargePayload implements Runnable{
                 )
                 .operation()
                 .send();
-        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(), responseBody,
+        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(), "lol oi",
                 "The received response body is not same as the expected");
-        Assert.assertEquals(response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE),
-                HttpHeaders.Values.APPLICATION_JSON,
-                "The received ContentType header value is different from that expected");
+//        Assert.assertEquals(response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE),
+//                HttpHeaders.Values.APPLICATION_JSON,
+//                "The received ContentType header value is different from that expected");
 
+        waitUtil.releaseSem();
+
+    }
+
+    public HttpClientResponseProcessorContext getResponse() {
+        return response;
     }
 }

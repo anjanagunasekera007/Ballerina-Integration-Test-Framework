@@ -1,4 +1,5 @@
-package org.ballerinalang.integration.tests.Clients;/*
+package org.ballerinalang.integration.tests.Clients;
+/*
 * Copyright (c) $today.year, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +17,7 @@ package org.ballerinalang.integration.tests.Clients;/*
 
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
+import org.ballerinalang.integration.tests.ClientRunner.WaitUtil;
 import org.testng.Assert;
 import org.wso2.carbon.protocol.emulator.dsl.Emulator;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBuilderContext;
@@ -26,6 +28,9 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 import java.io.File;
 
 public class ClientSlowReading implements Runnable {
+    private WaitUtil waitUtil;
+
+
     private String echoBackServerPath = "/services/client/normal";
     private File plainFile = new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
             "IntegrationTests/src/test/resources/files/100KB.txt");
@@ -37,10 +42,16 @@ public class ClientSlowReading implements Runnable {
             "usedtocreatemarkuplanguagessuchasDocBook.\",\"GlossSeeAlso\":[\"GML\"," +
             "\"XML\"]},\"GlossSee\":\"markup\"}}}}}";
 
+    HttpClientResponseProcessorContext rpc;
+
+    public ClientSlowReading(WaitUtil waitUtil) {
+        this.waitUtil = waitUtil;
+    }
+
     @Override
     public void run() {
 
-        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+                 rpc = Emulator.getHttpEmulator()
                 .client()
                 .given(
                         HttpClientConfigBuilderContext.configure()
@@ -56,11 +67,25 @@ public class ClientSlowReading implements Runnable {
                 )
                 .operation()
                 .send();
-        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(), responseBody,
+        Assert.assertEquals(rpc.getReceivedResponseContext().getResponseBody(), responseBody,
                 "The received response body is not same as the expected");
-        Assert.assertEquals(response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE),
+        Assert.assertEquals(rpc.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE),
                 HttpHeaders.Values.APPLICATION_JSON,
                 "The received ContentType header value is different from that expected");
 
+        waitUtil.releaseSem();
+
+
+
+    }
+
+    public HttpClientResponseProcessorContext getResponseContext()
+    {
+        if (rpc!=null)
+        {
+            return rpc;
+        }else {
+            return null;
+        }
     }
 }

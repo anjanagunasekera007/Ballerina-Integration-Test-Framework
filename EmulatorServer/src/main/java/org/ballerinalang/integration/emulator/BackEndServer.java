@@ -33,38 +33,86 @@ import static org.wso2.carbon.protocol.emulator.http.server.contexts.HttpServerC
 import static org.wso2.carbon.protocol.emulator.http.server.contexts.HttpServerRequestBuilderContext.request;
 import static org.wso2.carbon.protocol.emulator.http.server.contexts.HttpServerResponseBuilderContext.response;
 
+/**
+ * /add doc comment
+ */
 public class BackEndServer {
 
-    private static String hostIp = "127.0.0.1";
+    private static final String hostIp = "127.0.0.1";
 
     public static void main(String[] args) throws IOException {
+
         if (args.length > 0) {
-            hostIp = args[0];
+            for (String arg : args) {
+                switch (arg) {
+                    case "copyheaders":
+                        startHttpEmulatorCopyHeaders();
+                        break;
+                    case "malformedpayload":
+                        startHttpEmulatorMalformedPayload();
+                        break;
+                    case "writingconnectiondrop":
+                        startHttpEmulatorWritingConnectionDrop();
+                        break;
+                    case "readingconnectiondrop":
+                        startHttpEmulatorReadingConnectionDrop();
+                        break;
+                    case "chunkingdisabled":
+                        startHttpEmulatorChunkingDisabled();
+                        break;
+                    case "slowwriter":
+                        startHttpEmulatorSlowWriter();
+                        break;
+                    case "httpversion10":
+                        startHttpEmulatorHttpVersion10();
+                        break;
+                    case "keepalive":
+                        startHttpEmulatorKeepAlive();
+                        break;
+                    case "slowresponse":
+                        startHttpEmulatorSlowResponse();
+                        break;
+                    case "largepayload":
+                        startHttpEmulatorLargePayload();
+                        break;
+                    case "readingdelay":
+                        startHttpEmulatorWithReadingDelay();
+                        break;
+                    case "randomdrop":
+                        startHttpEmulatorRandomDrop();
+                        break;
+                    case "emulator":
+                        startHttpEmulator();
+                        break;
+                    case "missingheader":
+                        startHttpEmulatorMissingHeader();
+                        break;
+                    case "invalidspec":
+                        startHttpInvalidSpec();
+                        break;
+                    case "slowwritinglargepayload":
+                        startHttpEmulatorSlowWritingLargePayload();
+                        break;
+                    case "normal":
+                        startHttpEmulatorNormal();
+                        break;
+                    default:
+                        System.out.println("Invalid argument '" + arg + "'");
+                        System.exit(1);
+                        break;
+                }
+            }
+        } else {
+            System.out.println("No argument founds to start server");
         }
-        startHttpEmulatorCopyHeaders();
-        startHttpEmulatorMalformedPayload();
-        startHttpEmulatorWritingConnectionDrop();
-        startHttpEmulatorReadingConnectionDrop();
-        startHttpEmulatorChunkingDisabled();
-        startHttpEmulatorSlowWriter();
-        startHttpEmulatorHttpVersion10();
-        startHttpEmulatorKeepAlive();
-        startHttpEmulatorSlowResponse();
-        startHttpEmulatorLargePayload();
-        startHttpEmulatorWithReadingDelay();
-        startHttpEmulatorRandomDrop();
-        startHttpEmulator();
-        startHttpEmulatorMissingHeader();
-        startHttpInvalidSpec();
-        startHttpEmulatorSlowWritingLargePayload();
-        startHttpEmulatorNormal();
     }
 
-    private static HttpServerOperationBuilderContext startHttpEmulatorNormal() throws IOException {
+
+    private static void startHttpEmulatorNormal() throws IOException {
         System.out.println("Http Server Large Payload");
 
 
-        return Emulator.getHttpEmulator().server()
+        Emulator.getHttpEmulator().server()
 
                 .given(
                         configure().host(hostIp).port(6064).context("/normal").withEnableWireLog()
@@ -82,10 +130,10 @@ public class BackEndServer {
                 .operation().start();
     }
 
-    private static HttpServerOperationBuilderContext startHttpEmulatorLargePayload() throws IOException {
+    private static void startHttpEmulatorLargePayload() throws IOException {
         System.out.println("Http Server Large Payload");
         String s = readFile();
-        return Emulator.getHttpEmulator().server()
+        Emulator.getHttpEmulator().server()
 
                 .given(
                         configure().host(hostIp).port(6066).context("/large").withEnableWireLog()
@@ -102,8 +150,8 @@ public class BackEndServer {
                 .operation().start();
     }
 
-    private static HttpServerOperationBuilderContext startHttpEmulatorSlowResponse() {
-        return Emulator.getHttpEmulator().server()
+    private static void startHttpEmulatorSlowResponse() {
+        Emulator.getHttpEmulator().server()
                 .given(
                         configure().host(hostIp).port(6065).context("/slow").withLogicDelay(3000)
                                 .withEnableWireLog()
@@ -119,8 +167,8 @@ public class BackEndServer {
                 .operation().start();
     }
 
-    private static HttpServerOperationBuilderContext startHttpEmulatorWithReadingDelay() {
-        return Emulator.getHttpEmulator().server()
+    private static void startHttpEmulatorWithReadingDelay() {
+        Emulator.getHttpEmulator().server()
                 .given(
                         configure().host(hostIp).port(6067).context("/reading").withReadingDelay(3000)
                                 .withEnableWireLog()
