@@ -33,19 +33,15 @@ public class ClientAssertor {
             "IntegrationTests/src/test/resources/files/1MB.txt");
 
 
-    public void clientAssert(HttpClientResponseProcessorContext res, String assertString, String name)
-    {
-
-        Assert.assertEquals(res.getReceivedResponseContext().getResponseBody(),responseBody);
-        System.out.println( " I have asserted : " + res.getReceivedResponseContext().getResponseBody() + "* with *" + responseBody);
+    public void clientAssert(HttpClientResponseProcessorContext res, String assertString, String name) {
+        Assert.assertEquals(res.getReceivedResponseContext().getResponseBody(), responseBody);
         System.out.println(name);
         System.out.println();
         System.out.println();
     }
-    public void clientAssertBody(HttpClientResponseProcessorContext res,String name) throws IOException {
-        //TestUtils.getFileBody(largeFile)
+
+    public void clientAssertBody(HttpClientResponseProcessorContext res, String name) throws IOException {
         Assert.assertEquals(res.getReceivedResponseContext().getResponseBody(), TestUtils.getFileBody(largeFile));
-        System.out.println( " I have asserted : " + res.getReceivedResponseContext().getResponseBody() + "* with *" + responseBody);
         System.out.println(name);
         System.out.println();
         System.out.println();

@@ -14,9 +14,7 @@ package org.ballerinalang.integration.tests.Clients;/*
 * limitations under the License.
 */
 
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
-import org.testng.Assert;
 import org.wso2.carbon.protocol.emulator.dsl.Emulator;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestBuilderContext;
@@ -25,7 +23,7 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 
 import java.io.File;
 
-public class ClientSlowWriting  extends Client implements Runnable{
+public class ClientSlowWriting extends Client implements Runnable {
 
     private String echoBackServerPath = "/services/client/normal";
     private File plainFile = new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
@@ -40,15 +38,12 @@ public class ClientSlowWriting  extends Client implements Runnable{
 
     HttpClientResponseProcessorContext rsp;
 
-
     public HttpClientResponseProcessorContext getRsp() {
         return rsp;
     }
 
     @Override
     public void run() {
-        System.out.println( "====================== client slow writing ==========================");
-
         rsp = Emulator.getHttpEmulator()
                 .client()
                 .given(
@@ -65,7 +60,5 @@ public class ClientSlowWriting  extends Client implements Runnable{
                 )
                 .operation()
                 .send();
-
-
     }
 }

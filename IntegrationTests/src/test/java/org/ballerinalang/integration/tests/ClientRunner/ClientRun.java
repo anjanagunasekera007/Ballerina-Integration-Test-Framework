@@ -32,7 +32,6 @@ import org.ballerinalang.integration.tests.Clients.ClientSlowWriting;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-
 public class ClientRun {
 
     @BeforeClass
@@ -48,9 +47,6 @@ public class ClientRun {
 
     @Test
     public void AsyncTest() throws ExecutionException, InterruptedException, IOException {
-//        Future taskTwo = null;
-//        Future taskThree = null;
-//        Future taskFour = null;
         List<Future> futuresList = new ArrayList<>();
 
         List<ClientLargePayload> clientsL = new ArrayList<>();
@@ -73,59 +69,25 @@ public class ClientRun {
             ClientSlowWriting c3 = new ClientSlowWriting();
             clientsSW.add(c3);
             futuresList.add(executor.submit(c3));
-
-
-
         }
-
-
-//        for (int i = 0; i < 3; i++) {
-//            Runnable worker = new ClientLargePayload();
-//            executor.execute(worker)
-//        }
-//        executor.shutdown();
 
         executor.shutdown();
-        System.out.println("-----------------------");
         executor.awaitTermination(500, TimeUnit.SECONDS);
 
-        System.out.println(" - - - - - - - - - - - LARGE PAYLOAD - - - - - - - - - - - - - - - - -");
         for (ClientLargePayload c : clientsL) {
-            System.out.println(c.getRsp().getReceivedResponseContext().getResponseBody());
-            assertex.clientAssert(c.getRsp(), "largepayload","");
+            assertex.clientAssert(c.getRsp(), "largepayload", "");
         }
-        System.out.println(" ================== DOWN ==================");
-        System.out.println(" ================== DOWN ==================");
-        System.out.println(" ================== DOWN ==================");
-        System.out.println("- - - - - - - - - - - CLIENT SLOW WRITING - - - - - - - - - - - - - - - - -");
         for (ClientSlowWriting csw : clientsSW) {
-            System.out.println(csw.getRsp().getReceivedResponseContext().getResponseBody());
-            assertex.clientAssert(csw.getRsp(), "slowwriting","");
+            assertex.clientAssert(csw.getRsp(), "slowwriting", "");
 
         }
-        System.out.println(" ================== DOWN ==================");
-        System.out.println(" ================== DOWN ==================");
-        System.out.println(" ================== DOWN ==================");
-        System.out.println("- - - - - - - - - - - CLIENT SLOW READING - - - - - - - - - - - - - - - - -");
         for (ClientSlowReading csr : clientsSR) {
-            System.out.println(csr.getRsp().getReceivedResponseContext().getResponseBody());
-            assertex.clientAssert(csr.getRsp(), "slowreading","");
+            assertex.clientAssert(csr.getRsp(), "slowreading", "");
 
         }
-        System.out.println(" ================== DOWN ==================");
-        System.out.println(" ================== DOWN ==================");
-        System.out.println(" ================== DOWN ==================");
-
-        System.out.println(" ================== DONE ==================");
-
-
         for (Future s : futuresList) {
             System.out.println(s.isDone());
         }
-
-//        for (Client c:clients) {
-//            System.out.println(c.getContext().toString());
-//        }
 
     }
 }

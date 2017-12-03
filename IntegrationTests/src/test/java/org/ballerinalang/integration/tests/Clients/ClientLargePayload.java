@@ -23,7 +23,7 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 
 import java.io.File;
 
-public class ClientLargePayload extends Client implements Runnable{
+public class ClientLargePayload extends Client implements Runnable {
 
     private String echoBackServerPath = "/services/client/normal";
     private File largeFile = new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
@@ -41,10 +41,9 @@ public class ClientLargePayload extends Client implements Runnable{
     }
 
     HttpClientResponseProcessorContext rsp;
+
     @Override
     public void run() {
-        System.out.println( "====================== client large payload ==========================");
-
         rsp = Emulator.getHttpEmulator()
                 .client()
                 .given(
@@ -61,19 +60,6 @@ public class ClientLargePayload extends Client implements Runnable{
                 )
                 .operation()
                 .send();
-
-//        System.out.println("===================== ASSERTING ===================");
-//        System.out.println(response.getReceivedResponseContext().getResponseBody() + " + " + responseBody );
-//        System.out.println("=========== ASSERTED =============");
-//        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(), "looool",
-//                "The received response body is not same as the expected");
-//        System.out.println(" LOL OL OL OL OLOL OL OL OL ");
-//        Assert.assertEquals(response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE),
-//                HttpHeaders.Values.APPLICATION_JSON,
-//                "The received ContentType header value is different from that expected");
-////        System.exit(67);
-
-
     }
 
 

@@ -13,10 +13,7 @@ package org.ballerinalang.integration.tests.Clients;/*
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
-import org.testng.Assert;
 import org.wso2.carbon.protocol.emulator.dsl.Emulator;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestBuilderContext;
@@ -39,15 +36,12 @@ public class ClientSlowReading  extends Client implements Runnable {
 
     HttpClientResponseProcessorContext rsp;
 
-
     public HttpClientResponseProcessorContext getRsp() {
         return rsp;
     }
 
     @Override
     public void run() {
-        System.out.println( "====================== client slow reading ==========================");
-
         rsp = Emulator.getHttpEmulator()
                 .client()
                 .given(
@@ -64,11 +58,5 @@ public class ClientSlowReading  extends Client implements Runnable {
                 )
                 .operation()
                 .send();
-//        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(), responseBody,
-//                "The received response body is not same as the expected");
-//        Assert.assertEquals(response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE),
-//                HttpHeaders.Values.APPLICATION_JSON,
-//                "The received ContentType header value is different from that expected");
-
     }
 }
