@@ -38,27 +38,75 @@ public class BackEndServer {
     private static String hostIp = "127.0.0.1";
 
     public static void main(String[] args) throws IOException {
+
         if (args.length > 0) {
-            hostIp = args[0];
+            for (String arg : args) {
+                switch (arg) {
+                    case "copyheaders":
+                        startHttpEmulatorCopyHeaders();
+                        break;
+                    case "malformedpayload":
+                        startHttpEmulatorMalformedPayload();
+                        break;
+                    case "writingconnectiondrop":
+                        startHttpEmulatorWritingConnectionDrop();
+                        break;
+                    case "readingconnectiondrop":
+                        startHttpEmulatorReadingConnectionDrop();
+                        break;
+                    case "chunkingdisabled":
+                        startHttpEmulatorChunkingDisabled();
+                        break;
+                    case "slowwriter":
+                        startHttpEmulatorSlowWriter();
+                        break;
+                    case "httpversion10":
+                        startHttpEmulatorHttpVersion10();
+                        break;
+                    case "keepalive":
+                        startHttpEmulatorKeepAlive();
+                        break;
+                    case "slowresponse":
+                        startHttpEmulatorSlowResponse();
+                        break;
+                    case "largepayload":
+                        startHttpEmulatorLargePayload();
+                        break;
+                    case "readingdelay":
+                        startHttpEmulatorWithReadingDelay();
+                        break;
+                    case "randomdrop":
+                        startHttpEmulatorRandomDrop();
+                        break;
+                    case "emulator":
+                        startHttpEmulator();
+                        break;
+                    case "missingheader":
+                        startHttpEmulatorMissingHeader();
+                        break;
+                    case "invalidspec":
+                        startHttpInvalidSpec();
+                        break;
+                    case "slowwritinglargepayload":
+                        startHttpEmulatorSlowWritingLargePayload();
+                        break;
+                    case "normal":
+                        startHttpEmulatorNormal();
+                        break;
+                    case "lol":
+                        lolserver();
+                        break;
+                    default:
+                        System.out.println("Invalid argument '" + arg + "'");
+                        System.exit(1);
+                        break;
+                }
+            }
+        } else {
+            System.out.println("No argument founds to start server");
         }
-        startHttpEmulatorCopyHeaders();
-        startHttpEmulatorMalformedPayload();
-        startHttpEmulatorWritingConnectionDrop();
-        startHttpEmulatorReadingConnectionDrop();
-        startHttpEmulatorChunkingDisabled();
-        startHttpEmulatorSlowWriter();
-        startHttpEmulatorHttpVersion10();
-        startHttpEmulatorKeepAlive();
-        startHttpEmulatorSlowResponse();
-        startHttpEmulatorLargePayload();
-        startHttpEmulatorWithReadingDelay();
-        startHttpEmulatorRandomDrop();
-        startHttpEmulator();
-        startHttpEmulatorMissingHeader();
-        startHttpInvalidSpec();
-        startHttpEmulatorSlowWritingLargePayload();
-        startHttpEmulatorNormal();
     }
+
 
     private static HttpServerOperationBuilderContext startHttpEmulatorNormal() throws IOException {
         System.out.println("Http Server Large Payload");
@@ -81,6 +129,30 @@ public class BackEndServer {
 
                 .operation().start();
     }
+
+    //==
+    private static HttpServerOperationBuilderContext lolserver() throws IOException {
+        System.out.println("Http Server Large Payload");
+
+
+        return Emulator.getHttpEmulator().server()
+
+                .given(
+                        configure().host(hostIp).port(6059).context("/lol").withEnableWireLog()
+
+                )
+
+                .when(
+                        request().withMethod(HttpMethod.POST).withPath("/server")
+
+                )
+                .then(
+                        response().withBody("lol server responded").withStatusCode(HttpResponseStatus.OK)
+                )
+
+                .operation().start();
+    }
+    //==
 
     private static HttpServerOperationBuilderContext startHttpEmulatorLargePayload() throws IOException {
         System.out.println("Http Server Large Payload");

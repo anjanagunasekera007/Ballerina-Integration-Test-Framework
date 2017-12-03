@@ -52,6 +52,7 @@ public class ClientTests {
             "<note>\n" +
             "</note>";
 
+
     @BeforeClass
     public void initParameters() throws Exception {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");

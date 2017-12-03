@@ -14,9 +14,7 @@ package org.ballerinalang.integration.tests.Clients;/*
 * limitations under the License.
 */
 
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
-import org.testng.Assert;
 import org.wso2.carbon.protocol.emulator.dsl.Emulator;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestBuilderContext;
@@ -25,7 +23,7 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 
 import java.io.File;
 
-public class ClientLargePayload implements Runnable{
+public class ClientLargePayload extends Client implements Runnable{
 
     private String echoBackServerPath = "/services/client/normal";
     private File largeFile = new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
@@ -38,10 +36,16 @@ public class ClientLargePayload implements Runnable{
             "usedtocreatemarkuplanguagessuchasDocBook.\",\"GlossSeeAlso\":[\"GML\"," +
             "\"XML\"]},\"GlossSee\":\"markup\"}}}}}";
 
+    public HttpClientResponseProcessorContext getRsp() {
+        return rsp;
+    }
+
+    HttpClientResponseProcessorContext rsp;
     @Override
     public void run() {
+        System.out.println( "====================== client large payload ==========================");
 
-        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+        rsp = Emulator.getHttpEmulator()
                 .client()
                 .given(
                         HttpClientConfigBuilderContext.configure()
@@ -50,18 +54,27 @@ public class ClientLargePayload implements Runnable{
                 )
                 .when(
                         HttpClientRequestBuilderContext.request().withPath(echoBackServerPath)
-                                .withMethod(HttpMethod.POST).withBody(largeFile)
+                                .withMethod(HttpMethod.POST).withBody(responseBody)
                 )
                 .then(
                         HttpClientResponseBuilderContext.response().assertionIgnore()
                 )
                 .operation()
                 .send();
-        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(), responseBody,
-                "The received response body is not same as the expected");
-        Assert.assertEquals(response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE),
-                HttpHeaders.Values.APPLICATION_JSON,
-                "The received ContentType header value is different from that expected");
+
+//        System.out.println("===================== ASSERTING ===================");
+//        System.out.println(response.getReceivedResponseContext().getResponseBody() + " + " + responseBody );
+//        System.out.println("=========== ASSERTED =============");
+//        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(), "looool",
+//                "The received response body is not same as the expected");
+//        System.out.println(" LOL OL OL OL OLOL OL OL OL ");
+//        Assert.assertEquals(response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE),
+//                HttpHeaders.Values.APPLICATION_JSON,
+//                "The received ContentType header value is different from that expected");
+////        System.exit(67);
+
 
     }
+
+
 }

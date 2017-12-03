@@ -25,7 +25,7 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 
 import java.io.File;
 
-public class ClientSlowWriting implements Runnable{
+public class ClientSlowWriting  extends Client implements Runnable{
 
     private String echoBackServerPath = "/services/client/normal";
     private File plainFile = new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
@@ -38,9 +38,18 @@ public class ClientSlowWriting implements Runnable{
             "usedtocreatemarkuplanguagessuchasDocBook.\",\"GlossSeeAlso\":[\"GML\"," +
             "\"XML\"]},\"GlossSee\":\"markup\"}}}}}";
 
+    HttpClientResponseProcessorContext rsp;
+
+
+    public HttpClientResponseProcessorContext getRsp() {
+        return rsp;
+    }
+
     @Override
     public void run() {
-        HttpClientResponseProcessorContext response = Emulator.getHttpEmulator()
+        System.out.println( "====================== client slow writing ==========================");
+
+        rsp = Emulator.getHttpEmulator()
                 .client()
                 .given(
                         HttpClientConfigBuilderContext.configure()
@@ -49,18 +58,14 @@ public class ClientSlowWriting implements Runnable{
                 )
                 .when(
                         HttpClientRequestBuilderContext.request().withPath(echoBackServerPath)
-                                .withMethod(HttpMethod.POST).withBody(plainFile)
+                                .withMethod(HttpMethod.POST).withBody(responseBody)
                 )
                 .then(
                         HttpClientResponseBuilderContext.response().assertionIgnore()
                 )
                 .operation()
                 .send();
-        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(), responseBody,
-                "The received response body is not same as the expected");
-        Assert.assertEquals(response.getReceivedResponse().headers().get(HttpHeaders.Names.CONTENT_TYPE),
-                HttpHeaders.Values.APPLICATION_JSON,
-                "The received ContentType header value is different from that expected");
+
 
     }
 }
