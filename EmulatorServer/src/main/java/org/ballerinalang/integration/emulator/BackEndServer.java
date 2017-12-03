@@ -42,59 +42,56 @@ public class BackEndServer {
         if (args.length > 0) {
             for (String arg : args) {
                 switch (arg) {
-                    case "copyheaders":
+                    case "copyHeaders":
                         startHttpEmulatorCopyHeaders();
                         break;
-                    case "malformedpayload":
+                    case "malformedPayload":
                         startHttpEmulatorMalformedPayload();
                         break;
-                    case "writingconnectiondrop":
+                    case "writingConnectionDrop":
                         startHttpEmulatorWritingConnectionDrop();
                         break;
-                    case "readingconnectiondrop":
+                    case "readingConnectionDrop":
                         startHttpEmulatorReadingConnectionDrop();
                         break;
-                    case "chunkingdisabled":
+                    case "chunkingDisabled":
                         startHttpEmulatorChunkingDisabled();
                         break;
-                    case "slowwriter":
+                    case "slowWriter":
                         startHttpEmulatorSlowWriter();
                         break;
-                    case "httpversion10":
+                    case "httpVersion10":
                         startHttpEmulatorHttpVersion10();
                         break;
-                    case "keepalive":
+                    case "keepAlive":
                         startHttpEmulatorKeepAlive();
                         break;
-                    case "slowresponse":
+                    case "slowResponse":
                         startHttpEmulatorSlowResponse();
                         break;
-                    case "largepayload":
+                    case "largePayload":
                         startHttpEmulatorLargePayload();
                         break;
-                    case "readingdelay":
+                    case "readingDelay":
                         startHttpEmulatorWithReadingDelay();
                         break;
-                    case "randomdrop":
+                    case "randomDrop":
                         startHttpEmulatorRandomDrop();
                         break;
                     case "emulator":
                         startHttpEmulator();
                         break;
-                    case "missingheader":
+                    case "missingHeader":
                         startHttpEmulatorMissingHeader();
                         break;
-                    case "invalidspec":
+                    case "invalidSpec":
                         startHttpInvalidSpec();
                         break;
-                    case "slowwritinglargepayload":
+                    case "slowWritingLargePayload":
                         startHttpEmulatorSlowWritingLargePayload();
                         break;
                     case "normal":
                         startHttpEmulatorNormal();
-                        break;
-                    case "lol":
-                        lolserver();
                         break;
                     default:
                         System.out.println("Invalid argument '" + arg + "'");
