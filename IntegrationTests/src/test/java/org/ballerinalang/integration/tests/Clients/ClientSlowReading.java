@@ -14,6 +14,7 @@ package org.ballerinalang.integration.tests.Clients;/*
 * limitations under the License.
 */
 import io.netty.handler.codec.http.HttpMethod;
+import jdk.nashorn.internal.codegen.CompilerConstants;
 import org.wso2.carbon.protocol.emulator.dsl.Emulator;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientConfigBuilderContext;
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientRequestBuilderContext;
@@ -21,8 +22,9 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
 
 import java.io.File;
+import java.util.concurrent.Callable;
 
-public class ClientSlowReading  extends Client implements Runnable {
+public class ClientSlowReading  extends Client implements Callable {
     private String echoBackServerPath = "/services/client/normal";
     private File plainFile = new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
             "IntegrationTests/src/test/resources/files/100KB.txt");
@@ -41,7 +43,7 @@ public class ClientSlowReading  extends Client implements Runnable {
     }
 
     @Override
-    public void run() {
+    public Object call() throws Exception {
         rsp = Emulator.getHttpEmulator()
                 .client()
                 .given(
@@ -58,5 +60,6 @@ public class ClientSlowReading  extends Client implements Runnable {
                 )
                 .operation()
                 .send();
+        return null;
     }
 }

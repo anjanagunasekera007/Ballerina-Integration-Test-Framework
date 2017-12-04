@@ -22,8 +22,9 @@ import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponse
 import org.wso2.carbon.protocol.emulator.http.client.contexts.HttpClientResponseProcessorContext;
 
 import java.io.File;
+import java.util.concurrent.Callable;
 
-public class ClientSlowWriting extends Client implements Runnable {
+public class ClientSlowWriting extends Client implements Callable {
 
     private String echoBackServerPath = "/services/client/normal";
     private File plainFile = new File("/home/anjana/work/Ballerina-Integration-Test-Framework/" +
@@ -43,7 +44,7 @@ public class ClientSlowWriting extends Client implements Runnable {
     }
 
     @Override
-    public void run() {
+    public Object call() throws Exception {
         rsp = Emulator.getHttpEmulator()
                 .client()
                 .given(
@@ -60,5 +61,6 @@ public class ClientSlowWriting extends Client implements Runnable {
                 )
                 .operation()
                 .send();
+        return null;
     }
 }

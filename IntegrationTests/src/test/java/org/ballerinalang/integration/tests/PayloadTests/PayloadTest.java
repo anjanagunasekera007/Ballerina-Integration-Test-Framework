@@ -41,7 +41,7 @@ public class PayloadTest {
     private String pathMalformedPayload = "/services/normal_server/malformedpayload";
     private String pathMalformedPayloadProcess = "/services/normal_server/malformedpayloadprocess";
 
-        @BeforeClass
+    @BeforeClass
     public void initParameters() throws Exception {
         PostMethod postMethod = new PostMethod("http://localhost:9001/ballerinaagent/start");
         postMethod.addParameter("ballerinaHome", "/home/anjana/work/buildballerina/" +
@@ -104,7 +104,7 @@ public class PayloadTest {
                 )
                 .operation()
                 .send();
-        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(),"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        Assert.assertEquals(response.getReceivedResponseContext().getResponseBody(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<note>\n" +
                 "  <to>Tove</to>\n" +
                 "  <from>Jani</from>\n" +

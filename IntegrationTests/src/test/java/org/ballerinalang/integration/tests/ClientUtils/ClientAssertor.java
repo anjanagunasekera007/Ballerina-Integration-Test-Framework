@@ -40,7 +40,7 @@ public class ClientAssertor {
         System.out.println();
     }
 
-    public void clientAssertBody(HttpClientResponseProcessorContext res, String name) throws IOException {
+    public void clientAssertFile(HttpClientResponseProcessorContext res, String name) throws IOException {
         Assert.assertEquals(res.getReceivedResponseContext().getResponseBody(), TestUtils.getFileBody(largeFile));
         System.out.println(name);
         System.out.println();
