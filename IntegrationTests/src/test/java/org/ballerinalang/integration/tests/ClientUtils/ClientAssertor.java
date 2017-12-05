@@ -34,6 +34,8 @@ public class ClientAssertor {
 
 
     public void clientAssert(HttpClientResponseProcessorContext res, String assertString, String name) {
+        System.out.println(" ASSERTING");
+        System.out.println("**** " + res.getReceivedResponseContext().getResponseBody() + " \n ((( WITH ))) \n " + responseBody );
         Assert.assertEquals(res.getReceivedResponseContext().getResponseBody(), responseBody);
         System.out.println(name);
         System.out.println();
