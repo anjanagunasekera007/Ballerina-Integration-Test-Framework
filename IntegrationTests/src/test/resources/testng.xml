@@ -35,7 +35,7 @@
 
     <test name="class-tests" verbose="2">
         <classes>
-            <class name="org.ballerinalang.integration.tests.ClientRunner.ClientRun"/>
+            <class name="org.ballerinalang.integration.tests.ClientRunner.ClientRunAsync"/>
                 <!--<class name="org.ballerinalang.integration.tests.PayloadTests.PayloadTest"/>-->
                 <!--<class name="org.ballerinalang.integration.tests.NetworkTest.ConnectionTests"/>-->
                 <!--<class name="org.ballerinalang.integration.tests.SingleClientTest.SingleClientTests"/>-->

@@ -61,6 +61,6 @@ public class ClientLargePayload extends Client implements Callable {
                 )
                 .operation()
                 .send();
-        return null;
+        return rsp;
     }
 }
